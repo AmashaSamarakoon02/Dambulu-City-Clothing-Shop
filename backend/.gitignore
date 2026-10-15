@@ -1,0 +1,12 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/generated/prisma
+
+# Admin-uploaded product images (seed images are kept)
+/uploads/*
+!/uploads/seed/
+!/uploads/women/
+!/uploads/men/
+!/uploads/kids/
