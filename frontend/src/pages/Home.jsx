@@ -48,7 +48,7 @@ const Home = () => {
   const otherCategories = categories.filter((c) => !FEATURED.some((f) => f.slug === c.slug));
 
   return (
-    <div className="min-h-screen bg-luxe-light font-sans text-luxe-dark">
+    <div className="min-h-screen bg-page font-sans text-luxe-dark">
       <Navbar />
 
       {/* Hero */}
@@ -60,7 +60,7 @@ const Home = () => {
         <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-4">
           <h1 className="text-4xl md:text-6xl font-light tracking-[0.2em] text-white uppercase mb-6">New Season</h1>
           <p className="text-base md:text-xl text-gray-200 tracking-wider mb-10 max-w-2xl font-light">
-            Discover the latest clothing, shoes and accessories. Tailored for elegance, designed for you.
+            Welcome to Dambulla City Clothing Shop. Discover the latest clothing, shoes and accessories at affordable prices.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link to="/shop" className="bg-white text-black px-8 py-4 uppercase tracking-widest text-sm font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center group">
@@ -75,7 +75,7 @@ const Home = () => {
       </div>
 
       {/* Benefits */}
-      <div className="bg-white border-b border-gray-100">
+      <div className="bg-surface border-b border-line">
         <div className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-xs uppercase tracking-widest text-gray-600">
           <div className="flex items-center gap-3"><Truck className="w-5 h-5 shrink-0" /> Free delivery over {formatPrice(FREE_DELIVERY_THRESHOLD)}</div>
           <div className="flex items-center gap-3"><Banknote className="w-5 h-5 shrink-0" /> Cash on delivery</div>
@@ -110,7 +110,7 @@ const Home = () => {
               <Link
                 key={c.slug}
                 to={`/category/${c.slug}`}
-                className="bg-white border border-gray-200 py-8 text-center hover:border-black transition-colors"
+                className="bg-surface border border-line py-8 text-center hover:border-black hover:shadow-sm transition-all"
               >
                 <span className="block text-sm uppercase tracking-[0.2em] font-medium">{c.name}</span>
                 <span className="text-xs text-gray-500">{c.productCount} item{c.productCount === 1 ? '' : 's'}</span>
@@ -120,7 +120,7 @@ const Home = () => {
         )}
       </section>
 
-      <div className="bg-white">
+      <div className="bg-surface border-y border-line">
         <ProductRow title="New Arrivals" link="/shop?new=true" products={newArrivals} />
       </div>
       <ProductRow title="On Sale" link="/shop?sale=true" products={onSale} />

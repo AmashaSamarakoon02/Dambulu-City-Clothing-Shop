@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import usePageTitle from '../hooks/usePageTitle';
 import { formatPrice } from '../utils/format';
 import { FREE_DELIVERY_THRESHOLD, DELIVERY_FEE } from '../constants/shop';
+import { CONTACT } from '../constants/contact';
 
 const Table = ({ head, rows }) => (
   <div className="overflow-x-auto my-4">
@@ -26,8 +27,9 @@ const PAGES = {
     title: 'About Us',
     body: (
       <>
-        <p>Luxe Attire is a Sri Lankan fashion store offering contemporary clothing, shoes and accessories for men, women and kids.</p>
-        <p>We design for everyday comfort and special occasions alike, using quality fabrics and finishing every piece with care. Shop online with islandwide delivery and easy exchanges.</p>
+        <p>Welcome to <strong>Dambulla City Clothing Shop</strong> – a modern clothing store in the heart of Dambulla, Sri Lanka. We bring you the latest styles in men&apos;s, women&apos;s and kids&apos; clothing, along with shoes and accessories, all in one place.</p>
+        <p>We are committed to quality. Every item is carefully chosen for good fabric, a comfortable fit and lasting wear – and we keep our prices affordable, so the whole family can dress well without spending too much.</p>
+        <p>Our customers come first. Whether you visit us in Dambulla or shop online with islandwide delivery, we want every visit to be a pleasant and easy shopping experience, with friendly service and simple exchanges. Thank you for shopping with us!</p>
       </>
     )
   },
@@ -37,9 +39,13 @@ const PAGES = {
       <>
         <p>We're happy to help with orders, sizing and returns.</p>
         <ul className="list-none space-y-2 pl-0">
-          <li><strong>Phone:</strong> <a href="tel:+94112345678" className="underline">+94 11 234 5678</a> (Mon–Sat, 9am–6pm)</li>
-          <li><strong>Email:</strong> <a href="mailto:hello@luxeattire.lk" className="underline">hello@luxeattire.lk</a></li>
-          <li><strong>Store:</strong> 123 Fashion Avenue, Colombo 07, Sri Lanka</li>
+          <li><strong>Phone:</strong> <a href={CONTACT.phoneHref} className="underline">{CONTACT.phoneDisplay}</a> ({CONTACT.hours})</li>
+          <li><strong>WhatsApp:</strong> <a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" className="underline">Chat with us on WhatsApp</a></li>
+          <li><strong>Email:</strong> <a href={`mailto:${CONTACT.email}`} className="underline">{CONTACT.email}</a></li>
+          <li>
+            <strong>Store:</strong> {CONTACT.address}, {CONTACT.country}{' '}
+            (<a href={CONTACT.mapsUrl} target="_blank" rel="noopener noreferrer" className="underline">Get directions</a>)
+          </li>
         </ul>
         <p>Please include your order number (e.g. #1024) when contacting us about an order.</p>
       </>
@@ -127,7 +133,7 @@ const PAGES = {
     title: 'Terms of Service',
     body: (
       <>
-        <p>By placing an order on Luxe Attire you agree to the following:</p>
+        <p>By placing an order on Dambulla City Clothing Shop you agree to the following:</p>
         <ul>
           <li>All prices are in Sri Lankan Rupees (LKR) and include applicable taxes.</li>
           <li>Orders are subject to stock availability. If an item becomes unavailable we will contact you and refund any payment.</li>
@@ -149,7 +155,7 @@ const InfoPage = () => {
   }, [slug]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white font-sans text-luxe-dark">
+    <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
       <main className="flex-grow pt-32 md:pt-44 pb-20 px-4 sm:px-6 max-w-3xl mx-auto w-full">
         {page ? (

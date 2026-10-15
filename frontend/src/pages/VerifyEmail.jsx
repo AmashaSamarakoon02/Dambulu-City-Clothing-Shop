@@ -54,7 +54,7 @@ const VerifyEmail = () => {
       <div className="text-center space-y-6">
         {status === 'loading' && (
           <>
-            <Loader2 className="h-10 w-10 mx-auto animate-spin text-gray-400" />
+            <Loader2 className="h-10 w-10 mx-auto animate-spin text-gray-500" />
             <p className="text-sm text-gray-500">Verifying your email...</p>
           </>
         )}

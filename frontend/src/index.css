@@ -14,12 +14,39 @@
 
   --color-luxe-dark: #121212;
   --color-luxe-gray: #1a1a1a;
-  --color-luxe-light: #f5f5f5;
+  --color-luxe-light: #faf7f2;
   --color-luxe-white: #ffffff;
+
+  /* Site theme: warm ivory pages, sand sections, white surfaces (cards, header, forms). */
+  --color-page: #faf7f2;
+  --color-page-alt: #f3ede4;
+  --color-surface: #ffffff;
+  --color-line: #e7dfd3;
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-luxe-light text-luxe-dark font-sans antialiased;
+    @apply bg-page text-luxe-dark font-sans antialiased;
+  }
+
+  ::selection {
+    background-color: #121212;
+    color: #faf7f2;
+  }
+
+  /* Visible keyboard focus everywhere (mouse clicks don't show it). */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid #121212;
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 }

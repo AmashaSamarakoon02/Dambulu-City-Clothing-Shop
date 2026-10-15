@@ -7,7 +7,7 @@
 //   node src/createAdmin.js <email> <password> [name]
 //
 // Examples:
-//   node src/createAdmin.js owner@luxeattire.com Str0ngPass! "Store Owner"
+//   node src/createAdmin.js owner@example.com Str0ngPass! "Store Owner"
 //   node src/createAdmin.js existing.user@example.com anything
 //     (if the email already exists, the password argument is ignored and
 //      that account is simply promoted to ADMIN)

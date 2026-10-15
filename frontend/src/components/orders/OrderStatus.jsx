@@ -39,12 +39,12 @@ export const OrderTracker = ({ status }) => {
             )}
             <span
               className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold border-2 ${
-                done ? 'bg-black border-black text-white' : 'bg-white border-gray-300 text-gray-400'
+                done ? 'bg-black border-black text-white' : 'bg-white border-gray-300 text-gray-500'
               } ${i === current ? 'ring-4 ring-gray-200' : ''}`}
             >
               {done ? <Check className="w-4 h-4" /> : i + 1}
             </span>
-            <span className={`text-xs uppercase tracking-widest sm:text-center ${done ? 'text-black font-semibold' : 'text-gray-400'}`}>
+            <span className={`text-xs uppercase tracking-widest sm:text-center ${done ? 'text-black font-semibold' : 'text-gray-500'}`}>
               {ORDER_STATUS[step].label}
             </span>
           </li>
@@ -68,7 +68,7 @@ export const OrderItemsList = ({ items }) => (
           <p className="text-xs text-gray-500 mt-1">
             {[item.size && `Size: ${item.size}`, item.color && `Colour: ${item.color}`, `Qty: ${item.quantity}`].filter(Boolean).join(' · ')}
           </p>
-          <p className="text-xs text-gray-400 mt-1">{formatPrice(item.price)} each</p>
+          <p className="text-xs text-gray-500 mt-1">{formatPrice(item.price)} each</p>
         </div>
         <span className="text-sm font-medium whitespace-nowrap">{formatPrice(item.price * item.quantity)}</span>
       </li>

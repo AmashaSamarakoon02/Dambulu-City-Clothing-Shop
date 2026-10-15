@@ -43,6 +43,7 @@ const SalesChart = ({ data }) => {
                 onMouseEnter={() => setHover(i)}
                 onFocus={() => setHover(i)}
                 tabIndex={0}
+                role="img"
                 aria-label={`${d.date}: ${formatPrice(d.revenue)}, ${d.orders} orders`}
               >
                 <div
@@ -102,7 +103,7 @@ const AdminDashboard = ({ onNavigate }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading && !report) return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-gray-400" /></div>;
+  if (loading && !report) return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-gray-500" /></div>;
   if (error) return <div className="text-center py-20 text-gray-600">{error} <button onClick={load} className="underline ml-2">Retry</button></div>;
 
   const statusTotal = Object.values(report.ordersByStatus).reduce((a, b) => a + b, 0) || 1;

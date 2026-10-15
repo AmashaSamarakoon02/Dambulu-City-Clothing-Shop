@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { ArrowLeft } from 'lucide-react';
 import { AuthInput, AuthButton, AuthAlert, DevLinkNotice } from '../components/AuthLayout';
 import usePageTitle from '../hooks/usePageTitle';
+import BrandLogo from '../components/BrandLogo';
 import { EMAIL_REGEX } from '../utils/authValidation';
 
 const Login = () => {
@@ -70,13 +71,11 @@ const Login = () => {
     }
   };
 
-  const inputClass = 'px-4 py-3.5 border rounded-lg bg-gray-50 focus:bg-white placeholder:text-gray-400';
+  const inputClass = 'px-4 py-3.5 border rounded-lg bg-gray-50 focus:bg-white placeholder:text-gray-500';
 
   return (
-    <div className="min-h-screen bg-gray-100 font-sans text-luxe-dark flex flex-col items-center justify-center px-4 py-10">
-      <Link to="/home" className="text-xl sm:text-2xl font-light tracking-[0.25em] uppercase text-black hover:opacity-80 mb-8">
-        Luxe Attire
-      </Link>
+    <div className="min-h-screen bg-page font-sans text-luxe-dark flex flex-col items-center justify-center px-4 py-10">
+      <BrandLogo size="page" className="mb-8" />
 
       <div className="w-full max-w-md bg-white rounded-2xl shadow-[0_10px_40px_-12px_rgba(0,0,0,0.18)] px-6 py-8 sm:px-10 sm:py-10">
         <h1 className="text-3xl sm:text-4xl font-semibold tracking-[0.12em] uppercase">Login</h1>

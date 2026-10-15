@@ -53,21 +53,37 @@ const Shop = () => {
 
   const queryString = searchParams.toString();
   useEffect(() => {
+    // When filters change quickly, ignore responses from earlier (stale) requests.
+    let stale = false;
     setLoading(true);
     setError('');
     axiosInstance.get('/products', { params: { ...Object.fromEntries(new URLSearchParams(queryString)), category, limit: 12 } })
       .then((res) => {
+        if (stale) return;
         setProducts(res.data.data);
         setMeta(res.data.meta);
       })
-      .catch(() => setError('We couldn’t load products right now. Please try again.'))
-      .finally(() => setLoading(false));
+      .catch(() => {
+        if (!stale) setError('We couldn’t load products right now. Please try again.');
+      })
+      .finally(() => {
+        if (!stale) setLoading(false);
+      });
+    return () => {
+      stale = true;
+    };
   }, [queryString, category, reloadKey]);
 
   useEffect(() => {
+    let stale = false;
     axiosInstance.get('/products/filters', { params: { category } })
-      .then((res) => setFacets(res.data))
+      .then((res) => {
+        if (!stale) setFacets(res.data);
+      })
       .catch(() => {});
+    return () => {
+      stale = true;
+    };
   }, [category]);
 
   useEffect(() => {
@@ -120,7 +136,7 @@ const Shop = () => {
                   onClick={() => updateParams({ category: c.slug })}
                   className={category === c.slug ? 'font-semibold' : 'text-gray-600 hover:text-black'}
                 >
-                  {c.name} <span className="text-gray-400">({c.productCount})</span>
+                  {c.name} <span className="text-gray-500">({c.productCount})</span>
                 </button>
               </li>
             ))}
@@ -173,7 +189,7 @@ const Shop = () => {
               value={priceDraft.min} onChange={(e) => setPriceDraft((p) => ({ ...p, min: e.target.value }))}
               className="w-full border border-gray-300 px-3 py-2 text-sm outline-none focus:border-black" aria-label="Minimum price"
             />
-            <span className="text-gray-400">–</span>
+            <span className="text-gray-500">–</span>
             <input
               type="number" min="0" inputMode="numeric" placeholder={String(facets.maxPrice || 'Max')}
               value={priceDraft.max} onChange={(e) => setPriceDraft((p) => ({ ...p, max: e.target.value }))}
@@ -227,7 +243,7 @@ const Shop = () => {
   }[key]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white font-sans text-luxe-dark">
+    <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
 
       <main className="flex-grow pt-32 md:pt-44 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">

@@ -30,7 +30,7 @@ app.use('/uploads', express.static(UPLOADS_DIR, { maxAge: '7d' }));
 
 // Basic health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Luxe Attire API is running' });
+  res.json({ status: 'ok', message: 'Dambulla City Clothing Shop API is running' });
 });
 
 // Routes. Customers (/api/auth, cookie "jwt") and the admin portal (/api/admin,

@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Eye, EyeOff, Loader2 } from 'lucide-react';
+import BrandLogo from './BrandLogo';
 
 // Minimal, centered account-page shell (inspired by zigzag.lk's account pages).
 const AuthLayout = ({ title, subtitle, children }) => (
-  <div className="min-h-screen bg-white font-sans text-luxe-dark flex flex-col">
+  <div className="min-h-screen bg-page font-sans text-luxe-dark flex flex-col">
     <header className="border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         <Link
           to="/home"
-          className="inline-flex items-center text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-500 hover:text-black transition-colors"
+          aria-label="Return to store"
+          className="w-10 sm:w-40 inline-flex items-center text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-500 hover:text-black transition-colors"
         >
-          <ArrowLeft className="h-4 w-4 mr-2" /> Return to Store
+          <ArrowLeft className="h-4 w-4 sm:mr-2 shrink-0" /> <span className="hidden sm:inline">Return to Store</span>
         </Link>
-        <Link to="/home" className="text-xl sm:text-2xl font-light tracking-[0.2em] uppercase text-black hover:opacity-80 transition-opacity">
-          Luxe Attire
-        </Link>
-        <span className="w-35 hidden sm:block" />
+        <BrandLogo size="header" />
+        <span className="w-10 sm:w-40" />
       </div>
     </header>
 
@@ -60,7 +60,7 @@ export const AuthInput = ({ label, error, type = 'text', hideLabel = false, inpu
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
-            className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-black"
+            className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-black"
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}

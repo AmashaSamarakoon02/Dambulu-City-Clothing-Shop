@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
-const MAIL_FROM = process.env.MAIL_FROM || `Luxe Attire <${SMTP_USER}>`;
+const MAIL_FROM = process.env.MAIL_FROM || `Dambulla City Clothing Shop <${SMTP_USER}>`;
 
 const isConfigured = Boolean(SMTP_HOST && SMTP_USER && SMTP_PASS);
 
@@ -17,7 +17,7 @@ const transporter = isConfigured
 const layout = (title, body, buttonText, link) => `
   <div style="background:#f5f5f5;padding:32px 0;font-family:Arial,Helvetica,sans-serif;">
     <div style="max-width:480px;margin:0 auto;background:#ffffff;padding:40px 32px;text-align:center;">
-      <h1 style="margin:0 0 24px;font-weight:300;letter-spacing:6px;text-transform:uppercase;color:#121212;">Luxe Attire</h1>
+      <h1 style="margin:0 0 24px;font-weight:300;letter-spacing:6px;text-transform:uppercase;color:#121212;">Dambulla City Clothing Shop</h1>
       <h2 style="margin:0 0 16px;font-size:18px;letter-spacing:2px;text-transform:uppercase;color:#121212;">${title}</h2>
       <p style="margin:0 0 28px;font-size:14px;line-height:22px;color:#555;">${body}</p>
       <a href="${link}" style="display:inline-block;background:#121212;color:#ffffff;text-decoration:none;padding:14px 32px;font-size:12px;letter-spacing:2px;text-transform:uppercase;">${buttonText}</a>
@@ -36,7 +36,7 @@ const sendMail = async ({ to, subject, html, link }) => {
 
 const sendVerificationEmail = (user, link) => sendMail({
   to: user.email,
-  subject: 'Verify your Luxe Attire account',
+  subject: 'Verify your Dambulla City Clothing Shop account',
   link,
   html: layout(
     'Verify your email',
@@ -48,7 +48,7 @@ const sendVerificationEmail = (user, link) => sendMail({
 
 const sendPasswordResetEmail = (user, link) => sendMail({
   to: user.email,
-  subject: 'Reset your Luxe Attire password',
+  subject: 'Reset your Dambulla City Clothing Shop password',
   link,
   html: layout(
     'Reset your password',
@@ -84,7 +84,7 @@ const sendOrderConfirmationEmail = (order) => {
 
   return sendMail({
     to: order.email,
-    subject: `Order #${order.id} confirmed – Luxe Attire`,
+    subject: `Order #${order.id} confirmed – Dambulla City Clothing Shop`,
     link,
     html: layout(
       `Order #${order.id} received`,

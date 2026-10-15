@@ -83,7 +83,7 @@ const UserProfile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col bg-luxe-light">
+      <div className="min-h-screen flex flex-col bg-page">
         <Navbar />
         <div className="flex-grow flex items-center justify-center">
           <div className="animate-pulse text-gray-500 tracking-widest uppercase">Loading Profile...</div>
@@ -93,7 +93,7 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-luxe-light font-sans text-luxe-dark">
+    <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
 
       <div className="flex-grow pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full">
@@ -103,7 +103,7 @@ const UserProfile = () => {
             <div className="absolute -bottom-16 left-8 md:left-12">
               <div className="bg-white p-2 rounded-full shadow-lg">
                 <div className="bg-gray-100 h-24 w-24 md:h-32 md:w-32 rounded-full flex items-center justify-center">
-                  <User className="h-12 w-12 md:h-16 md:w-16 text-gray-400" />
+                  <User className="h-12 w-12 md:h-16 md:w-16 text-gray-500" />
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@ const UserProfile = () => {
                   <span className="block text-sm font-semibold uppercase tracking-widest">My Orders</span>
                   <span className="text-xs text-gray-500">{orders.length} order{orders.length === 1 ? '' : 's'} · track & manage</span>
                 </span>
-                <ChevronRight className="h-4 w-4 text-gray-400" />
+                <ChevronRight className="h-4 w-4 text-gray-500" />
               </Link>
               <Link to="/wishlist" className="flex items-center gap-4 border border-gray-200 rounded-lg p-5 hover:border-black transition-colors">
                 <Heart className="h-6 w-6" strokeWidth={1.5} />
@@ -168,7 +168,7 @@ const UserProfile = () => {
                   <span className="block text-sm font-semibold uppercase tracking-widest">Wishlist</span>
                   <span className="text-xs text-gray-500">{wishlistCount} saved item{wishlistCount === 1 ? '' : 's'}</span>
                 </span>
-                <ChevronRight className="h-4 w-4 text-gray-400" />
+                <ChevronRight className="h-4 w-4 text-gray-500" />
               </Link>
             </div>
 
@@ -228,7 +228,7 @@ const UserProfile = () => {
                   />
                 ) : (
                   <p className="text-lg text-gray-900 border-b-2 border-transparent py-2">
-                    {profile.phone || <span className="text-gray-400 italic text-base">Not added yet</span>}
+                    {profile.phone || <span className="text-gray-500 italic text-base">Not added yet</span>}
                   </p>
                 )}
               </div>
@@ -247,7 +247,7 @@ const UserProfile = () => {
                   />
                 ) : (
                   <div className="bg-gray-50 rounded-lg p-4 text-gray-600 min-h-[60px] border border-gray-100">
-                    {profile.address ? profile.address : <span className="text-gray-400 italic">No delivery address added yet.</span>}
+                    {profile.address ? profile.address : <span className="text-gray-500 italic">No delivery address added yet.</span>}
                   </div>
                 )}
               </div>
@@ -266,7 +266,7 @@ const UserProfile = () => {
                   />
                 ) : (
                   <div className="bg-gray-50 rounded-lg p-4 text-gray-600 min-h-[100px] border border-gray-100">
-                    {profile.bio ? profile.bio : <span className="text-gray-400 italic">No bio added yet.</span>}
+                    {profile.bio ? profile.bio : <span className="text-gray-500 italic">No bio added yet.</span>}
                   </div>
                 )}
               </div>

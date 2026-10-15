@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
 import useCategories from '../hooks/useCategories';
 import { FREE_DELIVERY_THRESHOLD } from '../constants/shop';
+import BrandLogo from './BrandLogo';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -111,9 +112,7 @@ const Navbar = () => {
 
             {/* Logo (Center) */}
             <div className="flex-shrink-0 flex items-center justify-center">
-              <Link to="/home" className="text-lg sm:text-2xl lg:text-3xl font-light tracking-[0.2em] uppercase text-black hover:opacity-80 transition-opacity whitespace-nowrap">
-                Luxe Attire
-              </Link>
+              <BrandLogo size="header" />
             </div>
 
             {/* Right Icons */}

@@ -72,7 +72,7 @@ const AdminUsers = () => {
 
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <div className="relative flex-grow">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
           <input
             type="search"
             value={search}
@@ -90,7 +90,7 @@ const AdminUsers = () => {
       {error && <div className="mb-6 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded">{error}</div>}
 
       {loading ? (
-        <div className="flex justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-gray-400" /></div>
+        <div className="flex justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-gray-500" /></div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[720px]">
@@ -110,12 +110,12 @@ const AdminUsers = () => {
                 return (
                   <tr key={u.id} className="border-b border-gray-100 hover:bg-gray-50">
                     <td className="py-3 pr-4">
-                      <div className="font-medium text-gray-900">{u.name} {isSelf && <span className="text-xs text-gray-400">(you)</span>}</div>
+                      <div className="font-medium text-gray-900">{u.name} {isSelf && <span className="text-xs text-gray-500">(you)</span>}</div>
                       {!u.isVerified && <div className="text-[11px] text-amber-600">Email not verified</div>}
                     </td>
                     <td className="py-3 pr-4 text-gray-600">
                       <div>{u.email}</div>
-                      {u.phone && <div className="text-xs text-gray-400">{u.phone}</div>}
+                      {u.phone && <div className="text-xs text-gray-500">{u.phone}</div>}
                     </td>
                     <td className="py-3 pr-4">
                       <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-widest uppercase ${roleBadgeClasses[u.role] || 'bg-gray-200 text-gray-700'}`}>
@@ -149,7 +149,7 @@ const AdminUsers = () => {
                 );
               })}
               {filtered.length === 0 && (
-                <tr><td colSpan="6" className="py-8 text-center text-gray-400">No accounts match your filters.</td></tr>
+                <tr><td colSpan="6" className="py-8 text-center text-gray-500">No accounts match your filters.</td></tr>
               )}
             </tbody>
           </table>

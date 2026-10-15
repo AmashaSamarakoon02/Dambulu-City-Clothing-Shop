@@ -36,7 +36,7 @@ const CartSidebar = () => {
 
       <aside
         aria-label="Shopping cart"
-        aria-hidden={!isCartOpen}
+        inert={!isCartOpen}
         className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white z-[70] transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl ${
           isCartOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
@@ -87,7 +87,7 @@ const CartSidebar = () => {
                     </Link>
                     <button
                       onClick={() => removeFromCart(item.key)}
-                      className="text-gray-400 hover:text-red-600 shrink-0"
+                      className="text-gray-500 hover:text-red-600 shrink-0"
                       aria-label={`Remove ${item.name}`}
                     >
                       <Trash2 className="w-4 h-4" />
@@ -132,7 +132,7 @@ const CartSidebar = () => {
               <span className="uppercase tracking-widest text-gray-600">Subtotal</span>
               <span className="font-semibold">{formatPrice(subtotal)}</span>
             </div>
-            <p className="text-xs text-gray-400">Delivery fee is calculated at checkout.</p>
+            <p className="text-xs text-gray-500">Delivery fee is calculated at checkout.</p>
             <button
               onClick={handleCheckout}
               className="w-full bg-black text-white py-4 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-gray-800 transition-colors"

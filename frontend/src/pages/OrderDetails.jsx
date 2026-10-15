@@ -39,7 +39,7 @@ const OrderDetails = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 font-sans text-luxe-dark">
+    <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
       <main className="flex-grow pt-32 md:pt-44 pb-20 px-4 sm:px-6 max-w-4xl mx-auto w-full">
         <nav className="text-[11px] text-gray-500 uppercase tracking-widest mb-4">
@@ -55,7 +55,7 @@ const OrderDetails = () => {
             <Link to="/orders" className="underline text-sm">Back to My Orders</Link>
           </div>
         ) : !order ? (
-          <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-gray-400" /></div>
+          <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-gray-500" /></div>
         ) : (
           <>
             <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
@@ -69,7 +69,7 @@ const OrderDetails = () => {
             <section className="bg-white border border-gray-100 p-6 sm:p-8 mb-6">
               <h2 className="text-xs font-semibold uppercase tracking-[0.2em] mb-6">Order Status</h2>
               <OrderTracker status={order.status} />
-              <p className="text-xs text-gray-400 mt-6">Last updated {formatDate(order.updatedAt, true)}</p>
+              <p className="text-xs text-gray-500 mt-6">Last updated {formatDate(order.updatedAt, true)}</p>
             </section>
 
             {order.paymentMethod === 'CARD' && order.paymentStatus !== 'PAID' && order.status !== 'CANCELLED' && (

@@ -53,7 +53,7 @@ const AdminReviews = () => {
       </div>
 
       <div className="relative mb-6">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
         <input
           type="text"
           value={search}
@@ -78,7 +78,7 @@ const AdminReviews = () => {
           <tbody>
             {filteredReviews.length === 0 ? (
               <tr>
-                <td colSpan="6" className="py-8 text-center text-gray-400 italic">No reviews found.</td>
+                <td colSpan="6" className="py-8 text-center text-gray-500 italic">No reviews found.</td>
               </tr>
             ) : filteredReviews.map(r => (
               <tr key={r.id} className="border-b border-gray-100 hover:bg-gray-50">

@@ -157,7 +157,7 @@ const Checkout = () => {
 
   if (cartItems.length === 0 && !placing) {
     return (
-      <div className="min-h-screen flex flex-col bg-white font-sans">
+      <div className="min-h-screen flex flex-col bg-page font-sans">
         <Navbar />
         <div className="flex-grow pt-48 pb-24 flex flex-col items-center justify-center text-center px-4">
           <ShoppingBag className="w-12 h-12 text-gray-300 mb-4" strokeWidth={1.25} />
@@ -173,7 +173,7 @@ const Checkout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-luxe-dark flex flex-col">
+    <div className="min-h-screen bg-page font-sans text-luxe-dark flex flex-col">
       <Navbar />
 
       <form
@@ -275,7 +275,7 @@ const Checkout = () => {
                 <dd>{deliveryFee ? formatPrice(deliveryFee) : <span className="text-green-700">Free</span>}</dd>
               </div>
               {deliveryFee > 0 && (
-                <p className="text-xs text-gray-400">Free delivery on orders over {formatPrice(FREE_DELIVERY_THRESHOLD)}.</p>
+                <p className="text-xs text-gray-500">Free delivery on orders over {formatPrice(FREE_DELIVERY_THRESHOLD)}.</p>
               )}
               <div className="flex justify-between text-base font-semibold border-t border-gray-200 pt-4">
                 <dt>Total</dt><dd>{formatPrice(total)}</dd>
@@ -294,7 +294,7 @@ const Checkout = () => {
               {placing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Lock className="w-4 h-4" />}
               {placing ? 'Placing Order…' : paymentMethod === 'CARD' ? 'Continue to Payment' : 'Place Order'}
             </button>
-            <p className="text-[11px] text-gray-400 text-center mt-4">
+            <p className="text-[11px] text-gray-500 text-center mt-4">
               By placing your order you agree to our <Link to="/pages/terms" className="underline">Terms &amp; Conditions</Link>.
             </p>
           </aside>

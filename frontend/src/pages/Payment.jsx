@@ -97,16 +97,16 @@ const Payment = () => {
   if (!order) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+        <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-sans">
+    <div className="min-h-screen bg-page flex items-center justify-center p-4 font-sans">
       <div className="bg-white shadow-xl w-full max-w-md">
         <div className="bg-black text-white p-6">
-          <p className="text-xs uppercase tracking-[0.25em] text-gray-400 mb-1">Luxe Attire · Secure Payment</p>
+          <p className="text-xs uppercase tracking-[0.25em] text-gray-500 mb-1">Dambulla City Clothing Shop · Secure Payment</p>
           <h1 className="text-lg">Order #{order.id}</h1>
           <p className="text-2xl font-semibold mt-2">{formatPrice(order.totalAmount)}</p>
         </div>
@@ -129,7 +129,7 @@ const Payment = () => {
                 value={card.number} onChange={(e) => setCard({ ...card, number: formatCardNumber(e.target.value) })}
                 className={`${inputClass('number')} pl-11`}
               />
-              <CreditCard className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-400" />
+              <CreditCard className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-500" />
             </div>
             {errors.number && <p className="text-xs text-red-600 mt-1">{errors.number}</p>}
           </div>
@@ -177,7 +177,7 @@ const Payment = () => {
             Pay later / view order
           </Link>
 
-          <div className="flex items-center justify-center gap-2 text-[11px] text-gray-400 pt-2">
+          <div className="flex items-center justify-center gap-2 text-[11px] text-gray-500 pt-2">
             <ShieldCheck className="h-4 w-4 text-green-600" />
             Demo payment gateway – no real card is charged. Test card: 4242 4242 4242 4242
           </div>

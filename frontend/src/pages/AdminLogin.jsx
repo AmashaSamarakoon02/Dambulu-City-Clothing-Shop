@@ -50,12 +50,12 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 font-sans">
+    <div className="min-h-screen bg-page flex items-center justify-center px-4 font-sans">
       <div className="w-full max-w-sm bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
         <div className="text-center mb-8">
           <ShieldCheck className="w-10 h-10 mx-auto text-purple-700 mb-3" strokeWidth={1.5} />
           <h1 className="text-lg font-bold tracking-widest uppercase">Admin Sign In</h1>
-          <p className="text-xs text-gray-500 mt-1">Luxe Attire management portal</p>
+          <p className="text-xs text-gray-500 mt-1">Dambulla City Clothing Shop management portal</p>
         </div>
         <form onSubmit={handleSubmit} noValidate className="space-y-5">
           {serverError && <AuthAlert>{serverError}</AuthAlert>}

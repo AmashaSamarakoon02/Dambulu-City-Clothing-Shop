@@ -5,7 +5,7 @@
 //   node src/createDelivery.js <email> <password> [name]
 //
 // Examples:
-//   node src/createDelivery.js driver1@luxeattire.com pass123 "Driver 1"
+//   node src/createDelivery.js driver1@example.com pass123 "Driver 1"
 //   node src/createDelivery.js existing.user@example.com anything
 
 require('dotenv').config();

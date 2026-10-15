@@ -44,7 +44,7 @@ export const PAYMENT_STATUS = {
 
 export const BANK_DETAILS = {
   bank: 'Commercial Bank of Ceylon',
-  accountName: 'Luxe Attire (Pvt) Ltd',
+  accountName: 'Dambulla City Clothing Shop',
   accountNumber: '1000 2345 6789',
   branch: 'Colombo 03'
 };

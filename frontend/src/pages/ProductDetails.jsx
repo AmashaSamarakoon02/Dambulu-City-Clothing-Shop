@@ -107,10 +107,10 @@ const ProductDetails = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col bg-white">
+      <div className="min-h-screen flex flex-col bg-page">
         <Navbar />
         <div className="flex-grow pt-48 flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+          <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
         </div>
         <Footer />
       </div>
@@ -119,7 +119,7 @@ const ProductDetails = () => {
 
   if (!product) {
     return (
-      <div className="min-h-screen flex flex-col bg-white font-sans text-luxe-dark">
+      <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
         <Navbar />
         <div className="flex-grow pt-48 pb-24 flex flex-col items-center justify-center text-center px-4">
           <h1 className="text-2xl font-light uppercase tracking-widest mb-3">Product not found</h1>
@@ -143,7 +143,7 @@ const ProductDetails = () => {
   const averageRating = reviews.length ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : 0;
 
   return (
-    <div className="min-h-screen flex flex-col bg-white font-sans text-luxe-dark">
+    <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
 
       <main className="flex-grow pt-32 md:pt-44 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
@@ -183,7 +183,7 @@ const ProductDetails = () => {
 
           {/* Info */}
           <div className="w-full md:w-1/2 flex flex-col">
-            {product.brand && <p className="text-[11px] uppercase tracking-[0.25em] text-gray-400 mb-2">{product.brand}</p>}
+            {product.brand && <p className="text-[11px] uppercase tracking-[0.25em] text-gray-500 mb-2">{product.brand}</p>}
             <h1 className="text-2xl md:text-3xl font-light text-gray-900 mb-3">{product.name}</h1>
 
             <div className="flex items-center gap-3 mb-5 text-xs text-gray-500">
@@ -200,7 +200,7 @@ const ProductDetails = () => {
               <span className={`text-2xl font-semibold ${discount ? 'text-red-600' : ''}`}>{formatPrice(product.price)}</span>
               {discount > 0 && (
                 <>
-                  <span className="text-base text-gray-400 line-through">{formatPrice(product.originalPrice)}</span>
+                  <span className="text-base text-gray-500 line-through">{formatPrice(product.originalPrice)}</span>
                   <span className="text-xs font-semibold text-red-600">SAVE {discount}%</span>
                 </>
               )}
@@ -324,9 +324,9 @@ const ProductDetails = () => {
                 <div className="space-y-4">
                   <p className="whitespace-pre-line">{product.description || 'Crafted from premium fabrics for a luxurious feel and a flattering fit.'}</p>
                   <dl className="grid grid-cols-[120px_1fr] gap-y-2 text-xs">
-                    <dt className="uppercase tracking-widest text-gray-400">Category</dt><dd>{nameFor(product.category)}</dd>
-                    {product.sizes?.length > 0 && <><dt className="uppercase tracking-widest text-gray-400">Sizes</dt><dd>{product.sizes.join(', ')}</dd></>}
-                    {product.colors?.length > 0 && <><dt className="uppercase tracking-widest text-gray-400">Colours</dt><dd>{product.colors.join(', ')}</dd></>}
+                    <dt className="uppercase tracking-widest text-gray-500">Category</dt><dd>{nameFor(product.category)}</dd>
+                    {product.sizes?.length > 0 && <><dt className="uppercase tracking-widest text-gray-500">Sizes</dt><dd>{product.sizes.join(', ')}</dd></>}
+                    {product.colors?.length > 0 && <><dt className="uppercase tracking-widest text-gray-500">Colours</dt><dd>{product.colors.join(', ')}</dd></>}
                   </dl>
                 </div>
               )}
@@ -339,7 +339,7 @@ const ProductDetails = () => {
                         <Stars value={r.rating} />
                       </div>
                       <p className="text-gray-600">{r.comment}</p>
-                      <span className="text-xs text-gray-400 block mt-2">{formatDate(r.createdAt)}</span>
+                      <span className="text-xs text-gray-500 block mt-2">{formatDate(r.createdAt)}</span>
                     </div>
                   )) : (
                     <p>No reviews yet. Be the first to review this product!</p>

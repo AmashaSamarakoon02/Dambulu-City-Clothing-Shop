@@ -89,7 +89,7 @@ const Register = () => {
             Click the link in the email to activate your account, then log in.
           </p>
           <DevLinkNotice link={devLink} label="Verify My Email" />
-          <p className="text-xs text-gray-400">Didn't get it? Check your spam folder or resend it below.</p>
+          <p className="text-xs text-gray-500">Didn't get it? Check your spam folder or resend it below.</p>
           <AuthButton type="button" variant="secondary" loading={resending} onClick={handleResend}>
             Resend Verification Email
           </AuthButton>
@@ -102,7 +102,7 @@ const Register = () => {
   }
 
   return (
-    <AuthLayout title="Sign Up" subtitle="Create your Luxe Attire account">
+    <AuthLayout title="Sign Up" subtitle="Create your Dambulla City Clothing Shop account">
       <form onSubmit={handleRegister} noValidate className="space-y-5">
         {serverError && (
           <AuthAlert>
@@ -143,7 +143,7 @@ const Register = () => {
             value={form.password} onChange={handleChange} error={errors.password} placeholder="••••••••"
           />
           {!errors.password && (
-            <p className="text-xs text-gray-400 mt-2">At least 8 characters, including a letter and a number.</p>
+            <p className="text-xs text-gray-500 mt-2">At least 8 characters, including a letter and a number.</p>
           )}
         </div>
 

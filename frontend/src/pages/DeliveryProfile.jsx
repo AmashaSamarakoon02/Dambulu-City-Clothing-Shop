@@ -103,7 +103,7 @@ const DeliveryProfile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col bg-luxe-light">
+      <div className="min-h-screen flex flex-col bg-page">
         <Navbar />
         <div className="flex-grow flex items-center justify-center">
           <div className="animate-pulse text-gray-500 tracking-widest uppercase">Loading Profile...</div>
@@ -113,7 +113,7 @@ const DeliveryProfile = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-luxe-light font-sans text-luxe-dark">
+    <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
 
       <div className="flex-grow pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full">
@@ -205,7 +205,7 @@ const DeliveryProfile = () => {
                     />
                   ) : (
                     <p className="text-lg text-gray-900 border-b-2 border-transparent py-2">
-                      {profile.phone || <span className="text-gray-400 italic text-base">Not added yet</span>}
+                      {profile.phone || <span className="text-gray-500 italic text-base">Not added yet</span>}
                     </p>
                   )}
                 </div>
@@ -226,7 +226,7 @@ const DeliveryProfile = () => {
                     />
                   ) : (
                     <p className="text-lg text-gray-900 border-b-2 border-transparent py-2">
-                      {profile.vehicleType || <span className="text-gray-400 italic text-base">Not specified</span>}
+                      {profile.vehicleType || <span className="text-gray-500 italic text-base">Not specified</span>}
                     </p>
                   )}
                 </div>
@@ -245,7 +245,7 @@ const DeliveryProfile = () => {
                     />
                   ) : (
                     <p className="text-lg text-gray-900 border-b-2 border-transparent py-2">
-                      {profile.deliveryZone || <span className="text-gray-400 italic text-base">Not specified</span>}
+                      {profile.deliveryZone || <span className="text-gray-500 italic text-base">Not specified</span>}
                     </p>
                   )}
                 </div>
@@ -289,7 +289,7 @@ const DeliveryProfile = () => {
                           <div className="flex items-center gap-4 mt-4 md:mt-0">
                             <StatusBadge status={order.status} />
                             <span className="font-bold">{formatPrice(order.totalAmount)}</span>
-                            {isExpanded ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+                            {isExpanded ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
                           </div>
                         </div>
 

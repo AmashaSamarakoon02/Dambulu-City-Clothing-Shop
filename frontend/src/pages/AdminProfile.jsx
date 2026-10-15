@@ -88,7 +88,7 @@ const MyProfile = () => {
           {isEditing ? (
             <input type="tel" value={profile.phone || ''} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} placeholder="e.g. +94 71 234 5678"
               className="w-full border-b-2 border-gray-300 focus:border-black bg-transparent py-2 outline-none text-lg" />
-          ) : <p className="text-lg py-2">{profile.phone || <span className="text-gray-400 italic text-base">Not added yet</span>}</p>}
+          ) : <p className="text-lg py-2">{profile.phone || <span className="text-gray-500 italic text-base">Not added yet</span>}</p>}
         </div>
         <div>
           <label className="block text-xs font-medium text-gray-700 uppercase tracking-widest mb-2">Bio</label>
@@ -97,7 +97,7 @@ const MyProfile = () => {
               className="w-full border-2 border-gray-200 focus:border-black rounded-lg p-4 outline-none resize-none" />
           ) : (
             <div className="bg-gray-50 rounded-lg p-4 text-gray-600 min-h-20 border border-gray-100">
-              {profile.bio || <span className="text-gray-400 italic">No bio added yet.</span>}
+              {profile.bio || <span className="text-gray-500 italic">No bio added yet.</span>}
             </div>
           )}
         </div>
@@ -130,12 +130,12 @@ const AdminProfile = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 font-sans text-gray-900">
+    <div className="min-h-screen flex flex-col bg-page font-sans text-gray-900">
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="px-4 sm:px-8 py-3 flex justify-between items-center gap-4">
           <div className="flex items-center gap-3 min-w-0">
             <ShieldAlert className="h-6 w-6 text-purple-700 shrink-0" />
-            <h1 className="text-base sm:text-lg font-bold tracking-widest uppercase truncate">Luxe Attire Admin</h1>
+            <h1 className="text-base sm:text-lg font-bold tracking-widest uppercase truncate">Dambulla City Clothing Shop · Admin</h1>
           </div>
           <div className="flex items-center gap-4 sm:gap-6">
             <span className="hidden md:inline text-xs text-gray-500">Signed in as <strong className="text-gray-800">{user?.name}</strong></span>
@@ -154,7 +154,7 @@ const AdminProfile = () => {
               onClick={() => goTo(key)}
               aria-current={activeTab === key ? 'page' : undefined}
               className={`flex items-center gap-2 px-3 py-3 text-xs uppercase tracking-widest font-bold whitespace-nowrap border-b-2 ${
-                activeTab === key ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-gray-700'
+                activeTab === key ? 'border-black text-black' : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
               <Icon className="w-4 h-4" /> {label}

@@ -1,19 +1,37 @@
 import React, { useState } from 'react';
-import { Mail, MapPin, Phone, Loader2 } from 'lucide-react';
+import { Mail, MapPin, Phone, Clock, Loader2, ArrowRight, Truck, Banknote, ShieldCheck, RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axiosInstance from '../api/axiosInstance';
 import { useAuth } from '../context/AuthContext';
 import useCategories from '../hooks/useCategories';
+import BrandLogo from './BrandLogo';
+import SocialIcon from './SocialIcons';
+import { CONTACT, SOCIAL_LINKS } from '../constants/contact';
 
-const linkClass = 'text-sm text-gray-500 hover:text-black tracking-wide transition-colors';
+const linkClass = 'inline-block text-sm text-gray-600 hover:text-black hover:translate-x-0.5 tracking-wide transition-all';
+const headingClass = 'text-xs font-semibold tracking-[0.2em] uppercase text-black mb-5';
 
-const SOCIALS = [
-  { label: 'FB', name: 'Facebook', href: 'https://www.facebook.com/' },
-  { label: 'IG', name: 'Instagram', href: 'https://www.instagram.com/' },
-  { label: 'TT', name: 'TikTok', href: 'https://www.tiktok.com/' },
-  { label: 'YT', name: 'YouTube', href: 'https://www.youtube.com/' }
+const TRUST_POINTS = [
+  { icon: Truck, label: 'Islandwide Delivery' },
+  { icon: Banknote, label: 'Cash on Delivery' },
+  { icon: ShieldCheck, label: 'Secure Payments' },
+  { icon: RefreshCw, label: '7-Day Exchanges' }
 ];
+
+const PAYMENT_BADGES = ['VISA', 'MASTERCARD', 'AMEX', 'COD'];
+
+const WhatsAppIcon = ({ className }) => <SocialIcon name="WhatsApp" className={className} />;
+
+// One contact row: round icon badge + content.
+const ContactRow = ({ icon: Icon, children }) => (
+  <li className="flex items-start gap-3">
+    <span className="h-9 w-9 shrink-0 rounded-full bg-white border border-line flex items-center justify-center text-gray-700">
+      <Icon className="h-4 w-4" />
+    </span>
+    <div className="text-sm text-gray-600 leading-relaxed pt-1.5 min-w-0">{children}</div>
+  </li>
+);
 
 const Footer = () => {
   const { isAuthenticated } = useAuth();
@@ -38,18 +56,18 @@ const Footer = () => {
   const accountLink = (path) => (isAuthenticated ? path : '/login');
 
   return (
-    <footer className="bg-luxe-light text-luxe-dark font-sans border-t border-gray-200">
-      <div className="bg-gray-50 py-14 px-4">
+    <footer className="bg-page-alt text-luxe-dark font-sans border-t border-line">
+      <div className="bg-surface border-b border-line py-14 px-4">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="md:w-1/2 text-center md:text-left">
             <h3 className="text-xl md:text-2xl font-light tracking-widest uppercase mb-2">Subscribe to our newsletter</h3>
-            <p className="text-gray-500 font-light tracking-wide text-sm">
+            <p className="text-gray-600 font-light tracking-wide text-sm">
               Be the first to know about new arrivals, sales & exclusive offers.
             </p>
           </div>
           <div className="md:w-1/2 w-full max-w-md">
             <form onSubmit={handleSubscribe} className="relative flex items-center">
-              <Mail className="absolute left-4 h-5 w-5 text-gray-400" />
+              <Mail className="absolute left-4 h-5 w-5 text-gray-600" />
               <label htmlFor="newsletter-email" className="sr-only">Email address</label>
               <input
                 id="newsletter-email"
@@ -73,20 +91,44 @@ const Footer = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
-          <div>
-            <h4 className="text-sm font-semibold tracking-widest uppercase mb-5">Shop</h4>
+        <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-12">
+          {/* Brand + social */}
+          <div className="col-span-2 lg:col-span-3">
+            <BrandLogo size="page" align="start" />
+            <p className="text-sm text-gray-600 leading-relaxed mt-5 max-w-xs">
+              Quality clothing at affordable prices, in the heart of Dambulla.
+            </p>
+            <h4 className={`${headingClass} mt-8 mb-4`}>Follow Us</h4>
+            <div className="flex flex-wrap gap-2.5">
+              {SOCIAL_LINKS.map((s) => (
+                <a
+                  key={s.name}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.name}
+                  title={s.name}
+                  className="h-10 w-10 rounded-full border border-line bg-white flex items-center justify-center text-gray-700 hover:bg-black hover:text-white hover:border-black hover:-translate-y-0.5 transition-all"
+                >
+                  <SocialIcon name={s.name} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="lg:col-span-2">
+            <h4 className={headingClass}>Shop</h4>
             <ul className="space-y-3">
               {categories.map((c) => (
                 <li key={c.slug}><Link to={`/category/${c.slug}`} className={linkClass}>{c.name}</Link></li>
               ))}
               <li><Link to="/shop?new=true" className={linkClass}>New Arrivals</Link></li>
-              <li><Link to="/shop?sale=true" className={`${linkClass} text-red-600`}>Sale</Link></li>
+              <li><Link to="/shop?sale=true" className={`${linkClass} text-red-700`}>Sale</Link></li>
             </ul>
           </div>
 
-          <div>
-            <h4 className="text-sm font-semibold tracking-widest uppercase mb-5">Customer Care</h4>
+          <div className="lg:col-span-2">
+            <h4 className={headingClass}>Customer Care</h4>
             <ul className="space-y-3">
               <li><Link to="/pages/contact" className={linkClass}>Contact Us</Link></li>
               <li><Link to="/pages/delivery" className={linkClass}>Delivery Information</Link></li>
@@ -96,8 +138,8 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
-            <h4 className="text-sm font-semibold tracking-widest uppercase mb-5">My Account</h4>
+          <div className="lg:col-span-2">
+            <h4 className={headingClass}>My Account</h4>
             <ul className="space-y-3">
               <li><Link to={accountLink('/profile')} className={linkClass}>{isAuthenticated ? 'My Account' : 'Login / Register'}</Link></li>
               <li><Link to={accountLink('/orders')} className={linkClass}>Order Tracking</Link></li>
@@ -106,42 +148,62 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="col-span-2 lg:col-span-1">
-            <h4 className="text-sm font-semibold tracking-widest uppercase mb-5">Connect With Us</h4>
-            <div className="flex space-x-3 mb-8">
-              {SOCIALS.map((s) => (
+          {/* Visit / contact */}
+          <div className="col-span-2 lg:col-span-3">
+            <h4 className={headingClass}>Visit Our Store</h4>
+            <ul className="space-y-4">
+              <ContactRow icon={MapPin}>
+                <span className="block text-black">{CONTACT.address}</span>
+                <span className="block text-gray-600">{CONTACT.country}</span>
                 <a
-                  key={s.label}
-                  href={s.href}
+                  href={CONTACT.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={s.name}
-                  className="h-10 w-10 border border-gray-200 rounded-full flex items-center justify-center text-gray-600 hover:bg-black hover:text-white hover:border-black transition-all text-xs font-bold"
+                  className="inline-flex items-center gap-1 mt-1 text-xs font-semibold uppercase tracking-widest text-black hover:underline underline-offset-4"
                 >
-                  {s.label}
+                  Get directions <ArrowRight className="h-3 w-3" />
                 </a>
-              ))}
-            </div>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <MapPin className="h-5 w-5 text-gray-400 mr-3 shrink-0 mt-0.5" />
-                <span className="text-sm text-gray-500 leading-relaxed tracking-wide">123 Fashion Avenue, Colombo 07, Sri Lanka</span>
-              </li>
-              <li className="flex items-center">
-                <Phone className="h-5 w-5 text-gray-400 mr-3 shrink-0" />
-                <a href="tel:+94112345678" className="text-sm text-gray-500 tracking-wide hover:text-black">+94 11 234 5678</a>
-              </li>
+              </ContactRow>
+              <ContactRow icon={Phone}>
+                <a href={CONTACT.phoneHref} className="text-black font-medium hover:underline underline-offset-4">{CONTACT.phoneDisplay}</a>
+              </ContactRow>
+              <ContactRow icon={WhatsAppIcon}>
+                <a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" className="hover:text-black hover:underline underline-offset-4">
+                  Chat on WhatsApp
+                </a>
+              </ContactRow>
+              <ContactRow icon={Mail}>
+                <a href={`mailto:${CONTACT.email}`} className="hover:text-black hover:underline underline-offset-4 break-all">{CONTACT.email}</a>
+              </ContactRow>
+              <ContactRow icon={Clock}>{CONTACT.hours}</ContactRow>
             </ul>
           </div>
         </div>
       </div>
 
-      <div className="border-t border-gray-200 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-gray-400 tracking-wider">
-            &copy; {new Date().getFullYear()} LUXE ATTIRE. ALL RIGHTS RESERVED.
+      {/* Trust strip */}
+      <div className="border-t border-line">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+          {TRUST_POINTS.map(({ icon: Icon, label }) => (
+            <div key={label} className="flex items-center justify-center md:justify-start gap-3 text-xs uppercase tracking-widest text-gray-600">
+              <Icon className="h-5 w-5 shrink-0 text-black" strokeWidth={1.5} /> {label}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="border-t border-line bg-page">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col lg:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-gray-600 tracking-wider text-center">
+            &copy; {new Date().getFullYear()} DAMBULLA CITY CLOTHING SHOP. ALL RIGHTS RESERVED.
           </p>
-          <div className="flex space-x-4 text-xs font-medium text-gray-400 tracking-wider">
+          <div className="flex flex-wrap items-center justify-center gap-2" aria-label="Payment methods we accept">
+            <span className="text-[10px] uppercase tracking-widest text-gray-600 mr-1">We accept</span>
+            {PAYMENT_BADGES.map((b) => (
+              <span key={b} className="border border-line bg-white rounded px-2 py-1 text-[10px] font-bold tracking-wider text-gray-600">{b}</span>
+            ))}
+          </div>
+          <div className="flex space-x-4 text-xs font-medium text-gray-600 tracking-wider">
             <Link to="/pages/privacy" className="hover:text-black transition-colors">PRIVACY POLICY</Link>
             <span>|</span>
             <Link to="/pages/terms" className="hover:text-black transition-colors">TERMS OF SERVICE</Link>

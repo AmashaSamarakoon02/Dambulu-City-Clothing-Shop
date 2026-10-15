@@ -23,7 +23,7 @@ const OrderConfirmation = () => {
   }, [orderId]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 font-sans text-luxe-dark">
+    <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
       <main className="flex-grow pt-32 md:pt-44 pb-20 px-4 max-w-3xl mx-auto w-full">
         {error ? (
@@ -32,7 +32,7 @@ const OrderConfirmation = () => {
             <Link to="/orders" className="underline text-sm">Go to My Orders</Link>
           </div>
         ) : !order ? (
-          <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-gray-400" /></div>
+          <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-gray-500" /></div>
         ) : (
           <>
             <div className="text-center mb-10">

@@ -237,13 +237,13 @@ const AdminProducts = ({ initialLowStock = false }) => {
   });
   const lowStockCount = products.filter((p) => p.stock <= LOW_STOCK_THRESHOLD).length;
 
-  if (loading) return <div className="flex justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-gray-400" /></div>;
+  if (loading) return <div className="flex justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-gray-500" /></div>;
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-5 md:p-8">
       <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
         <h2 className="text-xl font-light tracking-wide flex items-center gap-3">
-          <Package className="h-5 w-5" /> Products <span className="text-sm text-gray-400">({products.length})</span>
+          <Package className="h-5 w-5" /> Products <span className="text-sm text-gray-500">({products.length})</span>
         </h2>
         <button
           onClick={() => handleOpenModal()}
@@ -255,7 +255,7 @@ const AdminProducts = ({ initialLowStock = false }) => {
 
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <div className="relative flex-grow">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
           <input
             type="search"
             value={search}
@@ -264,7 +264,7 @@ const AdminProducts = ({ initialLowStock = false }) => {
             className="w-full pl-10 pr-4 py-2.5 border border-gray-200 bg-gray-50 focus:bg-white focus:border-black outline-none text-sm rounded"
           />
         </div>
-        <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} className="border border-gray-200 bg-gray-50 text-sm rounded px-3 py-2.5">
+        <select aria-label="Filter by category" value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} className="border border-gray-200 bg-gray-50 text-sm rounded px-3 py-2.5">
           <option value="">All categories</option>
           {categories.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}
         </select>
@@ -288,7 +288,7 @@ const AdminProducts = ({ initialLowStock = false }) => {
           </thead>
           <tbody>
             {filteredProducts.length === 0 ? (
-              <tr><td colSpan="6" className="py-10 text-center text-gray-400">No products found.</td></tr>
+              <tr><td colSpan="6" className="py-10 text-center text-gray-500">No products found.</td></tr>
             ) : filteredProducts.map((p) => (
               <tr key={p.id} className="border-b border-gray-100 hover:bg-gray-50">
                 <td className="py-3 pr-4">
@@ -307,7 +307,7 @@ const AdminProducts = ({ initialLowStock = false }) => {
                 <td className="py-3 pr-4 text-gray-600">{nameFor(p.category)}</td>
                 <td className="py-3 pr-4 text-right whitespace-nowrap">
                   <div>{formatPrice(p.price)}</div>
-                  {p.originalPrice && <div className="text-xs text-gray-400 line-through">{formatPrice(p.originalPrice)}</div>}
+                  {p.originalPrice && <div className="text-xs text-gray-500 line-through">{formatPrice(p.originalPrice)}</div>}
                 </td>
                 <td className="py-3 pr-4 text-xs text-gray-600">
                   <div>{p.sizes.join(', ')}</div>
@@ -342,7 +342,7 @@ const AdminProducts = ({ initialLowStock = false }) => {
           <div className="bg-white w-full max-w-3xl sm:rounded-xl shadow-2xl h-full sm:h-auto sm:max-h-[92vh] flex flex-col">
             <div className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
               <h3 className="text-lg font-semibold">{editingProduct ? 'Edit Product' : 'Add New Product'}</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-black" aria-label="Close"><X className="w-6 h-6" /></button>
+              <button onClick={() => setIsModalOpen(false)} className="text-gray-500 hover:text-black" aria-label="Close"><X className="w-6 h-6" /></button>
             </div>
 
             <form onSubmit={handleSave} noValidate className="flex-1 overflow-y-auto p-6 space-y-5">
@@ -374,7 +374,7 @@ const AdminProducts = ({ initialLowStock = false }) => {
                   )}
                 </div>
                 <input ref={fileInput} type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden onChange={handleUpload} />
-                <p className="text-xs text-gray-400 mt-2">JPG, PNG, WEBP or GIF · max 5 MB each · up to 8 images</p>
+                <p className="text-xs text-gray-500 mt-2">JPG, PNG, WEBP or GIF · max 5 MB each · up to 8 images</p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -391,7 +391,7 @@ const AdminProducts = ({ initialLowStock = false }) => {
                 </div>
                 <div>
                   <Label htmlFor="p-brand">Brand</Label>
-                  <input id="p-brand" value={formData.brand} onChange={set('brand')} className={inputClass} placeholder="Luxe Attire" />
+                  <input id="p-brand" value={formData.brand} onChange={set('brand')} className={inputClass} placeholder="Dambulla City" />
                 </div>
                 <div>
                   <Label htmlFor="p-price">Selling Price (LKR) *</Label>

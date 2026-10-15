@@ -37,7 +37,7 @@ const MyOrders = () => {
   });
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 font-sans text-luxe-dark">
+    <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
       <main className="flex-grow pt-32 md:pt-44 pb-20 px-4 sm:px-6 max-w-4xl mx-auto w-full">
         <nav className="text-[11px] text-gray-500 uppercase tracking-widest mb-4">
@@ -61,7 +61,7 @@ const MyOrders = () => {
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-gray-400" /></div>
+          <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-gray-500" /></div>
         ) : error ? (
           <p className="text-center text-gray-600 py-20">{error}</p>
         ) : visible.length === 0 ? (
@@ -97,7 +97,7 @@ const MyOrders = () => {
                       <p className="text-sm font-semibold">{formatPrice(order.totalAmount)}</p>
                       <p className="text-xs text-gray-500">{order.items.reduce((s, i) => s + i.quantity, 0)} item(s)</p>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-gray-400 shrink-0" />
+                    <ChevronRight className="w-4 h-4 text-gray-500 shrink-0" />
                   </div>
                   {order.status !== 'CANCELLED' && order.status !== 'DELIVERED' && (
                     <p className="text-xs text-gray-500 mt-3">{ORDER_STATUS[order.status]?.description}</p>

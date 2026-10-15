@@ -94,7 +94,7 @@ const AdminCategories = () => {
           </li>
         ))}
       </ul>
-      <p className="text-xs text-gray-400 mt-4">Renaming keeps the category's web address, so existing links keep working. Sizes and colours are managed per product.</p>
+      <p className="text-xs text-gray-500 mt-4">Renaming keeps the category's web address, so existing links keep working. Sizes and colours are managed per product.</p>
     </div>
   );
 };

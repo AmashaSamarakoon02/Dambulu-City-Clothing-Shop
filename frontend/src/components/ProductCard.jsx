@@ -13,7 +13,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <Link to={`/product/${product.id}`} className="group flex flex-col">
-      <div className="relative aspect-[3/4] w-full overflow-hidden bg-gray-100 mb-4">
+      <div className="relative aspect-[3/4] w-full overflow-hidden bg-page-alt mb-4">
         <img
           src={imageUrl(product.image)}
           alt={product.name}
@@ -57,7 +57,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       <div className="flex flex-col space-y-1.5">
-        {product.brand && <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400">{product.brand}</span>}
+        {product.brand && <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500">{product.brand}</span>}
         <h3 className="text-sm text-gray-800 tracking-wide leading-snug line-clamp-2 group-hover:underline underline-offset-4">
           {product.name}
         </h3>
@@ -66,7 +66,7 @@ const ProductCard = ({ product }) => {
             {formatPrice(product.price)}
           </span>
           {discount > 0 && (
-            <span className="text-xs text-gray-400 line-through">{formatPrice(product.originalPrice)}</span>
+            <span className="text-xs text-gray-500 line-through">{formatPrice(product.originalPrice)}</span>
           )}
         </div>
         {product.colors?.length > 0 && (
@@ -79,7 +79,7 @@ const ProductCard = ({ product }) => {
                 style={{ background: colorToCss(color) }}
               />
             ))}
-            {product.colors.length > 5 && <span className="text-[10px] text-gray-400">+{product.colors.length - 5}</span>}
+            {product.colors.length > 5 && <span className="text-[10px] text-gray-500">+{product.colors.length - 5}</span>}
           </div>
         )}
       </div>

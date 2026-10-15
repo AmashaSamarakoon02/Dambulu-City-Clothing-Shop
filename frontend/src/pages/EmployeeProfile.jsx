@@ -72,7 +72,7 @@ const EmployeeProfile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col bg-luxe-light">
+      <div className="min-h-screen flex flex-col bg-page">
         <Navbar />
         <div className="flex-grow flex items-center justify-center">
           <div className="animate-pulse text-gray-500 tracking-widest uppercase">Loading Profile...</div>
@@ -82,7 +82,7 @@ const EmployeeProfile = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-luxe-light font-sans text-luxe-dark">
+    <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
 
       <div className="flex-grow pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full">
@@ -92,7 +92,7 @@ const EmployeeProfile = () => {
             <div className="absolute -bottom-16 left-8 md:left-12">
               <div className="bg-white p-2 rounded-full shadow-lg">
                 <div className="bg-gray-100 h-24 w-24 md:h-32 md:w-32 rounded-full flex items-center justify-center">
-                  <Briefcase className="h-12 w-12 md:h-16 md:w-16 text-gray-400" />
+                  <Briefcase className="h-12 w-12 md:h-16 md:w-16 text-gray-500" />
                 </div>
               </div>
             </div>
@@ -199,7 +199,7 @@ const EmployeeProfile = () => {
                   />
                 ) : (
                   <p className="text-lg text-gray-900 border-b-2 border-transparent py-2">
-                    {profile.phone || <span className="text-gray-400 italic text-base">Not added yet</span>}
+                    {profile.phone || <span className="text-gray-500 italic text-base">Not added yet</span>}
                   </p>
                 )}
               </div>
@@ -221,7 +221,7 @@ const EmployeeProfile = () => {
                   </select>
                 ) : (
                   <p className="text-lg text-gray-900 border-b-2 border-transparent py-2">
-                    {profile.department || <span className="text-gray-400 italic text-base">Not assigned yet</span>}
+                    {profile.department || <span className="text-gray-500 italic text-base">Not assigned yet</span>}
                   </p>
                 )}
               </div>
@@ -240,7 +240,7 @@ const EmployeeProfile = () => {
                   />
                 ) : (
                   <div className="bg-gray-50 rounded-lg p-4 text-gray-600 min-h-[100px] border border-gray-100">
-                    {profile.bio ? profile.bio : <span className="text-gray-400 italic">No bio added yet.</span>}
+                    {profile.bio ? profile.bio : <span className="text-gray-500 italic">No bio added yet.</span>}
                   </div>
                 )}
               </div>

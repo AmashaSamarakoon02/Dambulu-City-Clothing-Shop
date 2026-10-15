@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Search, X, Loader2, ShoppingBag, ChevronLeft, ChevronRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axiosInstance from '../../api/axiosInstance';
@@ -59,7 +59,7 @@ const OrderDrawer = ({ orderId, onClose, onUpdated }) => {
           <button onClick={onClose} aria-label="Close"><X className="w-5 h-5" /></button>
         </div>
         {!order ? (
-          <div className="flex-1 flex items-center justify-center"><Loader2 className="w-6 h-6 animate-spin text-gray-400" /></div>
+          <div className="flex-1 flex items-center justify-center"><Loader2 className="w-6 h-6 animate-spin text-gray-500" /></div>
         ) : (
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -142,16 +142,25 @@ const AdminOrders = ({ initialStatus = '' }) => {
   const [loading, setLoading] = useState(true);
   const [selectedId, setSelectedId] = useState(null);
 
+  const latestRequest = useRef(0);
+
   const load = useCallback(() => {
+    // Ignore responses that arrive after a newer request (slow network/database).
+    const requestId = ++latestRequest.current;
     setLoading(true);
     axiosInstance.get('/orders', { params: { status, search: query, page, limit: 15 } })
       .then((res) => {
+        if (requestId !== latestRequest.current) return;
         setOrders(res.data.data);
         setMeta(res.data.meta);
         setStatusCounts(res.data.statusCounts);
       })
-      .catch(() => toast.error('Could not load orders'))
-      .finally(() => setLoading(false));
+      .catch(() => {
+        if (requestId === latestRequest.current) toast.error('Could not load orders');
+      })
+      .finally(() => {
+        if (requestId === latestRequest.current) setLoading(false);
+      });
   }, [status, query, page]);
 
   useEffect(() => {
@@ -184,7 +193,7 @@ const AdminOrders = ({ initialStatus = '' }) => {
         onSubmit={(e) => { e.preventDefault(); setQuery(search); setPage(1); }}
         className="relative mb-6"
       >
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
         <input
           type="search"
           value={search}
@@ -195,7 +204,7 @@ const AdminOrders = ({ initialStatus = '' }) => {
       </form>
 
       {loading ? (
-        <div className="flex justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-gray-400" /></div>
+        <div className="flex justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-gray-500" /></div>
       ) : orders.length === 0 ? (
         <p className="text-center text-gray-500 py-16">No orders found.</p>
       ) : (
