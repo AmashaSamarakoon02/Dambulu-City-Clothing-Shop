@@ -11,3 +11,16 @@ Agent.md
 Agents.md
 Claude.md
 .claude/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor settings
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
