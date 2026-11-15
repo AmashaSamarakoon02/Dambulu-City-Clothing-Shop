@@ -39,7 +39,7 @@ const MyOrders = () => {
   return (
     <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
-      <main className="flex-grow pt-32 md:pt-44 pb-20 px-4 sm:px-6 max-w-4xl mx-auto w-full">
+      <main id="main" className="flex-grow pt-24 md:pt-40 pb-20 px-4 sm:px-6 max-w-4xl mx-auto w-full">
         <nav className="text-[11px] text-gray-500 uppercase tracking-widest mb-4">
           <Link to="/profile" className="hover:text-black">My Account</Link>
           <span className="mx-2">/</span><span className="text-black">Orders</span>

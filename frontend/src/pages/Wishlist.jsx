@@ -14,7 +14,7 @@ const Wishlist = () => {
   return (
     <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
-      <main className="flex-grow pt-32 md:pt-44 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+      <main id="main" className="flex-grow pt-24 md:pt-40 pb-20 shell">
         <h1 className="text-2xl md:text-3xl font-light uppercase tracking-widest mb-2">My Wishlist</h1>
         <p className="text-sm text-gray-500 mb-10">{wishlist.length} saved item{wishlist.length === 1 ? '' : 's'}</p>
 

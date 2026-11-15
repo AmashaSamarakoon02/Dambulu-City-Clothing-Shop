@@ -6,21 +6,7 @@ import usePageTitle from '../hooks/usePageTitle';
 import { formatPrice } from '../utils/format';
 import { FREE_DELIVERY_THRESHOLD, DELIVERY_FEE } from '../constants/shop';
 import { CONTACT } from '../constants/contact';
-
-const Table = ({ head, rows }) => (
-  <div className="overflow-x-auto my-4">
-    <table className="w-full text-sm border border-gray-200">
-      <thead className="bg-gray-50">
-        <tr>{head.map((h) => <th key={h} className="px-3 py-2 text-left font-semibold border-b border-gray-200">{h}</th>)}</tr>
-      </thead>
-      <tbody>
-        {rows.map((row) => (
-          <tr key={row[0]} className="border-b border-gray-100">{row.map((cell, i) => <td key={i} className="px-3 py-2">{cell}</td>)}</tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-);
+import { SizeChartTables } from '../components/SizeChart';
 
 const PAGES = {
   about: {
@@ -100,20 +86,7 @@ const PAGES = {
   },
   'size-guide': {
     title: 'Size Guide',
-    body: (
-      <>
-        <p>Measurements are body measurements in inches. If you are between sizes, we recommend the larger size.</p>
-        <h3>Clothing</h3>
-        <Table
-          head={['Size', 'Chest', 'Waist', 'Hip']}
-          rows={[['XS', '32–33', '25–26', '34–35'], ['S', '34–35', '27–28', '36–37'], ['M', '36–38', '29–31', '38–40'], ['L', '39–41', '32–34', '41–43'], ['XL', '42–44', '35–37', '44–46'], ['XXL', '45–47', '38–40', '47–49']]}
-        />
-        <h3>Kids</h3>
-        <Table head={['Size', 'Height (cm)']} rows={[['2-3Y', '92–98'], ['4-5Y', '104–110'], ['6-7Y', '116–122'], ['8-9Y', '128–134'], ['10-11Y', '140–146'], ['12-13Y', '152–158']]} />
-        <h3>Shoes</h3>
-        <Table head={['EU', 'UK', 'Foot length (cm)']} rows={[['36', '3.5', '23.0'], ['38', '5', '24.0'], ['40', '6.5', '25.5'], ['42', '8', '26.5'], ['44', '9.5', '28.0']]} />
-      </>
-    )
+    body: <SizeChartTables />
   },
   privacy: {
     title: 'Privacy Policy',
@@ -157,7 +130,7 @@ const InfoPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
-      <main className="flex-grow pt-32 md:pt-44 pb-20 px-4 sm:px-6 max-w-3xl mx-auto w-full">
+      <main id="main" className="flex-grow pt-24 md:pt-40 pb-20 px-4 sm:px-6 max-w-3xl mx-auto w-full">
         {page ? (
           <>
             <h1 className="text-2xl md:text-3xl font-light uppercase tracking-widest mb-8">{page.title}</h1>

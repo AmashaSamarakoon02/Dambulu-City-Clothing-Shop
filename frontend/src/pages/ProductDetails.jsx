@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Heart, RefreshCw, Truck, Banknote, Star, Loader2, Minus, Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
+import { SizeChartModal } from '../components/SizeChart';
 import axiosInstance from '../api/axiosInstance';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -22,6 +23,16 @@ const Stars = ({ value, size = 'w-3.5 h-3.5' }) => (
   </div>
 );
 
+const Accordion = ({ title, children }) => (
+  <details className="group border-b border-gray-200">
+    <summary className="flex items-center justify-between py-3.5 cursor-pointer list-none text-xs uppercase tracking-[0.2em] text-gray-800 font-semibold">
+      {title}
+      <Plus className="w-4 h-4 transition-transform group-open:rotate-45" aria-hidden="true" />
+    </summary>
+    <div className="pb-4 text-sm text-gray-600">{children}</div>
+  </details>
+);
+
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -36,6 +47,8 @@ const ProductDetails = () => {
   const [activeTab, setActiveTab] = useState('description');
   const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
   const [submittingReview, setSubmittingReview] = useState(false);
+  const [sizeChartOpen, setSizeChartOpen] = useState(false);
+  const closeSizeChart = useCallback(() => setSizeChartOpen(false), []);
 
   const { addToCart, cartItems } = useCart();
   const { isAuthenticated } = useAuth();
@@ -146,7 +159,7 @@ const ProductDetails = () => {
     <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
 
-      <main className="flex-grow pt-32 md:pt-44 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+      <main id="main" className="flex-grow pt-24 md:pt-40 pb-16 shell">
         <nav className="text-[11px] text-gray-500 uppercase tracking-widest mb-8 truncate">
           <Link to="/home" className="hover:text-black">Home</Link>
           <span className="mx-2">/</span>
@@ -157,7 +170,7 @@ const ProductDetails = () => {
 
         <div className="flex flex-col md:flex-row gap-8 lg:gap-14">
           {/* Gallery */}
-          <div className="w-full md:w-1/2 flex flex-col-reverse sm:flex-row gap-4">
+          <div className="w-full md:w-1/2 flex flex-col-reverse sm:flex-row sm:items-start gap-4 md:sticky md:top-48 self-start">
             {images.length > 1 && (
               <div className="flex sm:flex-col gap-3 sm:w-20 overflow-x-auto sm:overflow-visible">
                 {images.map((img, i) => (
@@ -172,12 +185,17 @@ const ProductDetails = () => {
                 ))}
               </div>
             )}
-            <div className="flex-grow bg-gray-100 relative">
+            <div className="flex-grow bg-gray-100 relative w-full">
               <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
                 {product.isNewArrival && <span className="bg-black text-white text-[11px] font-semibold tracking-widest px-2.5 py-1">NEW</span>}
                 {discount > 0 && <span className="bg-red-600 text-white text-[11px] font-semibold tracking-widest px-2.5 py-1">-{discount}%</span>}
               </div>
               <img src={imageUrl(images[activeImage])} alt={product.name} className="w-full object-cover aspect-[3/4]" />
+              {images.length > 1 && (
+                <span className="absolute bottom-4 right-4 bg-white/90 text-[11px] font-medium tracking-widest px-2.5 py-1 tabular-nums">
+                  {activeImage + 1} / {images.length}
+                </span>
+              )}
             </div>
           </div>
 
@@ -193,17 +211,20 @@ const ProductDetails = () => {
                 </button>
               ) : <span>No reviews yet</span>}
               <span className="text-gray-300">|</span>
-              <span>SKU: LA-{String(product.id).padStart(5, '0')}</span>
+              <span>Product code: DC-{String(product.id).padStart(5, '0')}</span>
             </div>
 
-            <div className="flex items-baseline gap-3 mb-6">
-              <span className={`text-2xl font-semibold ${discount ? 'text-red-600' : ''}`}>{formatPrice(product.price)}</span>
+            <div className="mb-6">
+              <div className="flex items-baseline gap-3 flex-wrap">
+                <span className={`text-2xl font-semibold ${discount ? 'text-red-600' : ''}`}>{formatPrice(product.price)}</span>
+                {discount > 0 && <span className="text-base text-gray-500 line-through">{formatPrice(product.originalPrice)}</span>}
+              </div>
               {discount > 0 && (
-                <>
-                  <span className="text-base text-gray-500 line-through">{formatPrice(product.originalPrice)}</span>
-                  <span className="text-xs font-semibold text-red-600">SAVE {discount}%</span>
-                </>
+                <p className="mt-2 inline-block bg-accent-soft text-accent-dark text-xs font-semibold px-2.5 py-1">
+                  You save {formatPrice(product.originalPrice - product.price)} ({discount}%)
+                </p>
               )}
+              <p className="mt-1.5 text-[11px] text-gray-500">Inclusive of all taxes</p>
             </div>
 
             {/* Colour */}
@@ -236,7 +257,7 @@ const ProductDetails = () => {
                   <p className="text-xs uppercase tracking-[0.2em] text-gray-600">
                     Size: <span className="text-black font-semibold normal-case tracking-normal">{selectedSize || 'Select'}</span>
                   </p>
-                  <Link to="/pages/size-guide" className="text-xs underline underline-offset-4 text-gray-500 hover:text-black">Size Guide</Link>
+                  <button type="button" onClick={() => setSizeChartOpen(true)} className="text-xs underline underline-offset-4 text-gray-500 hover:text-black">View size chart</button>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {product.sizes.map((size) => (
@@ -328,6 +349,19 @@ const ProductDetails = () => {
                     {product.sizes?.length > 0 && <><dt className="uppercase tracking-widest text-gray-500">Sizes</dt><dd>{product.sizes.join(', ')}</dd></>}
                     {product.colors?.length > 0 && <><dt className="uppercase tracking-widest text-gray-500">Colours</dt><dd>{product.colors.join(', ')}</dd></>}
                   </dl>
+                  <div className="border-t border-gray-200 mt-6">
+                    <Accordion title="Delivery & returns">
+                      <p>Islandwide delivery in 1–5 working days. Free delivery on orders over {formatPrice(FREE_DELIVERY_THRESHOLD)}; cash on delivery available.</p>
+                      <p className="mt-2">Exchange or return unworn items with tags within 7 days. <Link to="/pages/returns" className="underline">Read the returns policy</Link>.</p>
+                    </Accordion>
+                    <Accordion title="Care">
+                      <ul className="list-disc pl-5 space-y-1">
+                        <li>Follow the care label on the item.</li>
+                        <li>Wash dark colours separately; dry in shade.</li>
+                        <li>Store leather goods and shoes in a cool, dry place.</li>
+                      </ul>
+                    </Accordion>
+                  </div>
                 </div>
               )}
               {activeTab === 'reviews' && (
@@ -398,7 +432,7 @@ const ProductDetails = () => {
 
         {related.length > 0 && (
           <section className="mt-16 pt-12 border-t border-gray-100">
-            <h2 className="text-xl font-light uppercase tracking-widest text-center mb-10">You May Also Like</h2>
+            <h2 className="text-xl font-light uppercase tracking-widest text-center mb-10">Customers Also Viewed</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-10">
               {related.map((p) => <ProductCard key={p.id} product={p} />)}
             </div>
@@ -406,6 +440,7 @@ const ProductDetails = () => {
         )}
       </main>
 
+      <SizeChartModal open={sizeChartOpen} onClose={closeSizeChart} />
       <Footer />
     </div>
   );

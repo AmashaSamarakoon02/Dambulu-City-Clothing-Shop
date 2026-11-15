@@ -26,6 +26,7 @@ import InfoPage from './pages/InfoPage';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import CartSidebar from './components/CartSidebar';
+import FloatingActions from './components/FloatingActions';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
@@ -50,6 +51,7 @@ const StoreLayout = () => (
   <WishlistProvider>
     <CartSidebar />
     <Outlet />
+    <FloatingActions />
   </WishlistProvider>
 );
 

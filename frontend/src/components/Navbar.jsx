@@ -1,41 +1,92 @@
-import React, { useRef, useState } from 'react';
-import { Search, ShoppingCart, Menu, X, User, Heart, LogIn, LogOut, UserPlus, Package } from 'lucide-react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Search, ShoppingCart, Menu, X, User, Heart, LogIn, LogOut, UserPlus, Package, ChevronDown, ArrowRight } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
 import useCategories from '../hooks/useCategories';
-import { FREE_DELIVERY_THRESHOLD } from '../constants/shop';
 import BrandLogo from './BrandLogo';
+
+// Short menu labels ("Men's Wear" → "Men") so the menu can use a large, easy-to-read font.
+const shortLabel = (name) => name.replace(/\s*(['’]s|['’])?\s+Wear$/i, '');
+
+const Badge = ({ count, className = 'bg-[#e8c48a] text-black' }) => (
+  count > 0 ? (
+    <span className={`absolute -top-2 -right-2.5 min-w-[18px] h-[18px] px-1 rounded-full text-[11px] font-bold flex items-center justify-center ${className}`}>
+      {count}
+    </span>
+  ) : null
+);
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [scrolled, setScrolled] = useState(false);
   const mobileSearchRef = useRef(null);
+  const accountRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const { setIsCartOpen, cartCount: cartItemCount } = useCart();
   const { isAuthenticated, user, logout } = useAuth();
   const { wishlistCount } = useWishlist();
   const { categories: shopCategories } = useCategories();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Close the account menu on outside click or Escape.
+  useEffect(() => {
+    if (!accountOpen) return undefined;
+    const onDown = (e) => { if (!accountRef.current?.contains(e.target)) setAccountOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setAccountOpen(false); };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [accountOpen]);
+
+  // Close menus when the page changes.
+  useEffect(() => {
+    setIsOpen(false);
+    setAccountOpen(false);
+  }, [location.pathname, location.search]);
+
+  // Skip link: move keyboard focus straight to the page content.
+  const skipToContent = (e) => {
+    e.preventDefault();
+    const target = document.getElementById('main') || document.querySelector('main') || document.querySelector('header + *');
+    if (!target) return;
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+    target.scrollIntoView();
+  };
 
   const handleLogout = async () => {
     try {
       await logout();
       toast.success('You have been logged out');
       setIsOpen(false);
+      setAccountOpen(false);
       navigate('/home');
     } catch {
       toast.error('Logout failed. Please try again.');
     }
   };
 
-  const handleSearch = (e) => {
-    if (e.key === 'Enter' && searchQuery.trim()) {
-      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery('');
-      setIsOpen(false);
-    }
+  const submitSearch = (e) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+    setSearchQuery('');
+    setIsOpen(false);
   };
 
   const openMobileSearch = () => {
@@ -43,195 +94,195 @@ const Navbar = () => {
     setTimeout(() => mobileSearchRef.current?.focus(), 0);
   };
 
-  const categories = [
-    ...shopCategories.map((c) => ({ name: c.name, link: `/category/${c.slug}` })),
-    { name: 'New Arrivals', link: '/shop?new=true' },
-    { name: 'Sale', link: '/shop?sale=true' },
+  const links = [
+    { name: 'Shop All', short: 'Shop All', link: '/shop' },
+    ...shopCategories.map((c) => ({ name: c.name, short: shortLabel(c.name), link: `/category/${c.slug}` })),
+    { name: 'New Arrivals', short: 'New In', link: '/shop?new=true' },
+    { name: 'Sale', short: 'Sale', link: '/shop?sale=true' }
   ];
+  const current = location.pathname + location.search;
+  const isActive = (link) => (link === '/shop' ? location.pathname === '/shop' && !location.search : current === link);
+
+  const searchForm = (inputRef, id) => (
+    <form onSubmit={submitSearch} role="search" className="relative w-full">
+      <label htmlFor={id} className="sr-only">Search products</label>
+      <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-white/60 pointer-events-none" />
+      <input
+        ref={inputRef}
+        id={id}
+        type="search"
+        placeholder="Search products"
+        className="w-full bg-white/10 border border-white/15 rounded-full pl-11 pr-12 py-2.5 text-[15px] text-white placeholder-white/60 outline-none focus:bg-white/15 focus:border-white/40 transition-colors"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <button type="submit" aria-label="Search" className="absolute right-1.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center text-white/80 hover:bg-white/15 hover:text-white">
+        <ArrowRight className="h-[18px] w-[18px]" />
+      </button>
+    </form>
+  );
+
+  const iconBtn = 'relative flex flex-col items-center gap-1 text-white/85 hover:text-white transition-colors';
+  const iconLabel = 'text-[12px] font-medium hidden lg:block';
 
   return (
-    <header className="fixed w-full z-50 top-0">
-      {/* Top Banner */}
-      <div className="bg-black text-white text-[10px] md:text-xs tracking-widest py-2 px-4 font-light">
-        <div className="max-w-7xl mx-auto flex items-center justify-center md:justify-between">
-          <span className="hidden md:block w-56" />
-          <span className="text-center">FREE ISLANDWIDE DELIVERY ON ALL ORDERS OVER LKR {FREE_DELIVERY_THRESHOLD.toLocaleString()} | SECURE PAYMENTS</span>
-          <div className="hidden md:flex w-56 justify-end items-center gap-3 uppercase">
-            {isAuthenticated ? (
-              <>
-                <Link to="/profile" className="hover:underline underline-offset-4 truncate max-w-30">
-                  Hi, {user?.name?.split(' ')[0]}
-                </Link>
-                <span className="text-gray-500">|</span>
-                <button onClick={handleLogout} className="uppercase tracking-widest hover:underline underline-offset-4">
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="hover:underline underline-offset-4">Login</Link>
-                <span className="text-gray-500">|</span>
-                <Link to="/register" className="hover:underline underline-offset-4">Sign Up</Link>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
+    <header className={`fixed w-full z-50 top-0 transition-shadow duration-300 ${scrolled ? 'shadow-xl shadow-black/20' : ''}`}>
+      <a
+        href="#main"
+        onClick={skipToContent}
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
+      >
+        Skip to content
+      </a>
 
-      {/* Middle Header */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            
-            {/* Mobile Menu & Search (Left) */}
-            <div className="flex-1 flex items-center">
+      {/* Main bar: logo · search · icons (z-20 keeps the account menu above the category bar) */}
+      <div className={`relative z-20 transition-colors duration-300 ${scrolled ? 'bg-[#1c1c1c]/95 backdrop-blur-md' : 'bg-[#1c1c1c]'}`}>
+        <div className="shell">
+          <div className="flex items-center gap-4 lg:gap-8 h-16 md:h-20">
+            {/* Mobile: menu + search */}
+            <div className="flex items-center gap-1 md:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-luxe-dark hover:text-black focus:outline-none md:hidden mr-4"
+                className="w-10 h-10 -ml-2 flex items-center justify-center text-white"
                 aria-label={isOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={isOpen}
               >
                 {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
-              <div className="hidden md:flex items-center text-gray-500 bg-gray-50 px-4 py-2 rounded-full w-64 border border-transparent focus-within:border-gray-200 focus-within:bg-white transition-all">
-                <Search className="h-4 w-4 mr-2" />
-                <input
-                  type="search"
-                  placeholder="Search products..."
-                  aria-label="Search products"
-                  className="bg-transparent text-sm focus:outline-none w-full text-black placeholder-gray-400"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={handleSearch}
-                />
-              </div>
-              <button onClick={openMobileSearch} className="md:hidden text-luxe-dark hover:text-black" aria-label="Search">
+              <button onClick={openMobileSearch} className="w-10 h-10 flex items-center justify-center text-white" aria-label="Search">
                 <Search className="h-5 w-5" />
               </button>
             </div>
 
-            {/* Logo (Center) */}
-            <div className="flex-shrink-0 flex items-center justify-center">
-              <BrandLogo size="header" />
+            <div className="flex-1 md:flex-none flex justify-center md:justify-start">
+              <BrandLogo size="header" tone="light" />
             </div>
 
-            {/* Right Icons */}
-            <div className="flex-1 flex items-center justify-end space-x-4 sm:space-x-6">
-              <Link to={isAuthenticated ? "/profile" : "/login"} className="text-luxe-dark hover:text-black transition-colors hidden sm:flex flex-col items-center group">
-                <User className="h-5 w-5 mb-1 group-hover:scale-110 transition-transform" />
-                <span className="text-[9px] uppercase tracking-wider font-medium">Account</span>
-              </Link>
-              <Link to="/wishlist" className="text-luxe-dark hover:text-black transition-colors hidden sm:flex flex-col items-center group">
-                <span className="relative mb-1">
-                  <Heart className="h-5 w-5 group-hover:scale-110 transition-transform" />
-                  {wishlistCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-black text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                      {wishlistCount}
+            <div className="hidden md:block flex-1 max-w-xl mx-auto">{searchForm(null, 'header-search')}</div>
+
+            {/* Icons */}
+            <div className="flex items-center gap-4 sm:gap-6">
+              <div className="relative hidden sm:block" ref={accountRef}>
+                {isAuthenticated ? (
+                  <button
+                    onClick={() => setAccountOpen((v) => !v)}
+                    aria-expanded={accountOpen}
+                    aria-haspopup="menu"
+                    className={iconBtn}
+                  >
+                    <User className="h-6 w-6" />
+                    <span className={`${iconLabel} lg:flex items-center gap-0.5`}>
+                      Hi, {user?.name?.split(' ')[0] || 'there'} <ChevronDown className="w-3.5 h-3.5" />
                     </span>
-                  )}
+                  </button>
+                ) : (
+                  <Link to="/login" className={iconBtn} aria-label="Account – log in or sign up">
+                    <User className="h-6 w-6" />
+                    <span className={iconLabel}>Account</span>
+                  </Link>
+                )}
+                {accountOpen && (
+                  <div role="menu" className="absolute right-0 top-full mt-3 w-56 bg-white text-luxe-dark rounded-xl shadow-2xl ring-1 ring-black/5 py-2 text-[15px]">
+                    <Link role="menuitem" to="/profile" className="flex items-center gap-3 px-4 py-2.5 hover:bg-page-alt"><User className="w-4 h-4" /> My Account</Link>
+                    <Link role="menuitem" to="/orders" className="flex items-center gap-3 px-4 py-2.5 hover:bg-page-alt"><Package className="w-4 h-4" /> My Orders</Link>
+                    <Link role="menuitem" to="/wishlist" className="flex items-center gap-3 px-4 py-2.5 hover:bg-page-alt"><Heart className="w-4 h-4" /> Wishlist</Link>
+                    <div className="my-1 border-t border-line" />
+                    <button role="menuitem" onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-page-alt text-red-700">
+                      <LogOut className="w-4 h-4" /> Log out
+                    </button>
+                  </div>
+                )}
+              </div>
+              <Link to="/wishlist" className={`${iconBtn} hidden sm:flex`} aria-label={`Wishlist (${wishlistCount} items)`}>
+                <span className="relative">
+                  <Heart className="h-6 w-6" />
+                  <Badge count={wishlistCount} />
                 </span>
-                <span className="text-[9px] uppercase tracking-wider font-medium">Wishlist</span>
+                <span className={iconLabel}>Wishlist</span>
               </Link>
-              <button
-                onClick={() => setIsCartOpen(true)}
-                aria-label={`Open cart (${cartItemCount} items)`}
-                className="text-luxe-dark hover:text-black transition-colors relative flex flex-col items-center group"
-              >
-                <span className="relative mb-1">
-                  <ShoppingCart className="h-5 w-5 group-hover:scale-110 transition-transform" />
-                  {cartItemCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                      {cartItemCount}
-                    </span>
-                  )}
+              <button onClick={() => setIsCartOpen(true)} aria-label={`Open cart (${cartItemCount} items)`} className={iconBtn}>
+                <span className="relative">
+                  <ShoppingCart className="h-6 w-6" />
+                  <Badge count={cartItemCount} className="bg-red-500 text-white" />
                 </span>
-                <span className="text-[9px] uppercase tracking-wider font-medium hidden sm:block">Cart</span>
+                <span className={iconLabel}>Cart</span>
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Navigation (Desktop) */}
-      <div className="hidden md:block bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-center flex-wrap gap-x-6 lg:gap-x-10 gap-y-2 py-4">
-            <NavLink to="/shop" end className={({ isActive }) => `text-xs tracking-[0.15em] hover:text-black uppercase font-medium transition-colors ${isActive ? 'text-black' : 'text-gray-600'}`}>
-              Shop All
-            </NavLink>
-            {categories.map((category) => (
-              <Link
-                key={category.name}
-                to={category.link}
-                className={`text-xs tracking-[0.15em] hover:text-black uppercase font-medium transition-colors ${category.name === 'Sale' ? 'text-red-600' : 'text-gray-600'}`}
-              >
-                {category.name}
-              </Link>
-            ))}
-          </div>
+      {/* Category menu (desktop) */}
+      <nav aria-label="Shop categories" className={`hidden md:block border-t border-white/10 transition-colors duration-300 ${scrolled ? 'bg-[#262626]/95 backdrop-blur-md' : 'bg-[#262626]'}`}>
+        <div className="shell">
+          <ul className="flex justify-center flex-wrap gap-x-5 lg:gap-x-7 xl:gap-x-9">
+            {links.map((l) => {
+              const active = isActive(l.link);
+              const sale = l.name === 'Sale';
+              return (
+                <li key={l.name}>
+                  <Link
+                    to={l.link}
+                    title={l.name !== l.short ? l.name : undefined}
+                    aria-current={active ? 'page' : undefined}
+                    className={`relative block py-3.5 text-[15px] font-medium transition-colors after:absolute after:left-0 after:right-0 after:bottom-0 after:h-[3px] after:rounded-full after:transition-transform ${
+                      sale ? 'text-[#ff9a8f] hover:text-[#ffb8b0] after:bg-[#ff9a8f]' : 'text-white/85 hover:text-white after:bg-[#e8c48a]'
+                    } ${active ? 'text-white after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'}`}
+                  >
+                    {l.short}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </div>
-      </div>
+      </nav>
 
-      {/* Mobile Navigation */}
+      {/* Mobile menu */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 shadow-lg absolute w-full max-h-[calc(100vh-120px)] overflow-y-auto">
-          <div className="px-4 py-4 border-b border-gray-100">
-            <div className="flex items-center text-gray-500 bg-gray-50 px-4 py-2 rounded-full w-full border border-gray-200">
-              <Search className="h-4 w-4 mr-2" />
-              <input
-                ref={mobileSearchRef}
-                type="search"
-                placeholder="Search products..."
-                aria-label="Search products"
-                className="bg-transparent text-sm focus:outline-none w-full text-black"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={handleSearch}
-              />
-            </div>
-          </div>
-          <div className="px-4 pt-2 pb-6 space-y-1">
-            <Link to="/shop" onClick={() => setIsOpen(false)} className="block px-2 py-4 text-sm font-medium tracking-widest hover:bg-gray-50 uppercase border-b border-gray-100 text-gray-800">
-              Shop All
-            </Link>
-            {categories.map((category) => (
-              <Link 
-                key={category.name} 
-                to={category.link} 
+        <div className="md:hidden bg-white shadow-2xl absolute w-full max-h-[calc(100vh-64px)] overflow-y-auto">
+          <div className="px-4 py-4 bg-[#1c1c1c]">{searchForm(mobileSearchRef, 'mobile-search')}</div>
+          <nav aria-label="Shop categories" className="px-4 pt-2 pb-6">
+            {links.map((l) => (
+              <Link
+                key={l.name}
+                to={l.link}
                 onClick={() => setIsOpen(false)}
-                className={`block px-2 py-4 text-sm font-medium tracking-widest hover:bg-gray-50 uppercase border-b border-gray-100 ${category.name === 'Sale' ? 'text-red-600' : 'text-gray-800'}`}
+                aria-current={isActive(l.link) ? 'page' : undefined}
+                className={`flex items-center justify-between px-2 py-4 text-base font-medium border-b border-gray-100 ${l.name === 'Sale' ? 'text-red-700' : 'text-gray-900'}`}
               >
-                {category.name}
+                {l.name}
+                <ArrowRight className="w-4 h-4 text-gray-400" />
               </Link>
             ))}
-            <div className="pt-6 grid grid-cols-2 gap-4 border-t border-gray-200 mt-4">
+            <div className="pt-6 grid grid-cols-2 gap-4">
               {isAuthenticated ? (
                 <>
-                  <Link to="/profile" onClick={() => setIsOpen(false)} className="flex items-center text-sm font-medium tracking-widest uppercase text-gray-600">
-                    <User className="h-5 w-5 mr-3" /> Account
+                  <Link to="/profile" onClick={() => setIsOpen(false)} className="flex items-center text-[15px] font-medium text-gray-700">
+                    <User className="h-5 w-5 mr-3" /> My Account
                   </Link>
-                  <Link to="/orders" onClick={() => setIsOpen(false)} className="flex items-center text-sm font-medium tracking-widest uppercase text-gray-600">
+                  <Link to="/orders" onClick={() => setIsOpen(false)} className="flex items-center text-[15px] font-medium text-gray-700">
                     <Package className="h-5 w-5 mr-3" /> My Orders
                   </Link>
-                  <button onClick={handleLogout} className="flex items-center text-sm font-medium tracking-widest uppercase text-gray-600">
-                    <LogOut className="h-5 w-5 mr-3" /> Logout
+                  <button onClick={handleLogout} className="flex items-center text-[15px] font-medium text-red-700">
+                    <LogOut className="h-5 w-5 mr-3" /> Log out
                   </button>
                 </>
               ) : (
                 <>
-                  <Link to="/login" onClick={() => setIsOpen(false)} className="flex items-center text-sm font-medium tracking-widest uppercase text-gray-600">
-                    <LogIn className="h-5 w-5 mr-3" /> Login
+                  <Link to="/login" onClick={() => setIsOpen(false)} className="flex items-center text-[15px] font-medium text-gray-700">
+                    <LogIn className="h-5 w-5 mr-3" /> Log in
                   </Link>
-                  <Link to="/register" onClick={() => setIsOpen(false)} className="flex items-center text-sm font-medium tracking-widest uppercase text-gray-600">
-                    <UserPlus className="h-5 w-5 mr-3" /> Sign Up
+                  <Link to="/register" onClick={() => setIsOpen(false)} className="flex items-center text-[15px] font-medium text-gray-700">
+                    <UserPlus className="h-5 w-5 mr-3" /> Sign up
                   </Link>
                 </>
               )}
-              <Link to="/wishlist" onClick={() => setIsOpen(false)} className="flex items-center text-sm font-medium tracking-widest uppercase text-gray-600">
+              <Link to="/wishlist" onClick={() => setIsOpen(false)} className="flex items-center text-[15px] font-medium text-gray-700">
                 <Heart className="h-5 w-5 mr-3" /> Wishlist {wishlistCount > 0 && `(${wishlistCount})`}
               </Link>
             </div>
-          </div>
+          </nav>
         </div>
       )}
     </header>

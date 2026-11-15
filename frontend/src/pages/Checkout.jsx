@@ -179,7 +179,7 @@ const Checkout = () => {
       <form
         onSubmit={handlePlaceOrder}
         noValidate
-        className="flex-grow pt-32 md:pt-44 pb-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full"
+        className="flex-grow pt-24 md:pt-40 pb-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full"
       >
         <h1 className="text-2xl md:text-3xl font-light uppercase tracking-widest mb-8">Checkout</h1>
 

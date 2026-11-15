@@ -25,7 +25,7 @@ const OrderConfirmation = () => {
   return (
     <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
-      <main className="flex-grow pt-32 md:pt-44 pb-20 px-4 max-w-3xl mx-auto w-full">
+      <main id="main" className="flex-grow pt-24 md:pt-40 pb-20 px-4 max-w-3xl mx-auto w-full">
         {error ? (
           <div className="text-center py-20">
             <p className="text-gray-600 mb-4">{error}</p>

@@ -1,34 +1,98 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Truck, RefreshCw, ShieldCheck, Banknote, Store, MessageCircle, ArrowRight, Wallet } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
-import { ArrowRight, Truck, RefreshCw, ShieldCheck, Banknote } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import HeroCarousel from '../components/HeroCarousel';
+import HeroSearch from '../components/HeroSearch';
+import FlashSale from '../components/FlashSale';
+import Lookbook from '../components/Lookbook';
+import HomeFaq from '../components/HomeFaq';
+import SectionHeader from '../components/SectionHeader';
 import axiosInstance from '../api/axiosInstance';
 import usePageTitle from '../hooks/usePageTitle';
 import useCategories from '../hooks/useCategories';
-import { formatPrice } from '../utils/format';
+import { formatPrice, imageUrl } from '../utils/format';
 import { FREE_DELIVERY_THRESHOLD } from '../constants/shop';
+import { CONTACT } from '../constants/contact';
 import heroImg from '../assets/hero_banner.png';
 import womenImg from '../assets/women_category.png';
 import menImg from '../assets/men_category.png';
 import kidsImg from '../assets/kids_category.png';
 
-const FEATURED = [
-  { name: "Women's Wear", slug: 'womens-wear', image: womenImg },
-  { name: "Men's Wear", slug: 'mens-wear', image: menImg },
-  { name: "Kids' Wear", slug: 'kids-wear', image: kidsImg },
+const SLIDES = [
+  {
+    eyebrow: 'Dambulla City Clothing Shop',
+    title: 'New Season',
+    highlight: 'Fresh Styles',
+    text: 'Discover the latest clothing, shoes, bags and accessories for the whole family – at affordable prices.',
+    image: heroImg,
+    cta: { label: 'Shop New Arrivals', to: '/shop?new=true' },
+    secondary: { label: 'Shop All', to: '/shop' }
+  },
+  {
+    eyebrow: "Women's Collection",
+    title: 'Silk Sarees',
+    highlight: 'For Every Occasion',
+    text: "Silk sarees and cotton kurtis for weddings, Avurudu and festive days – now in Women's Wear.",
+    image: imageUrl('/uploads/ethnic/purple-gold-border-saree.jpg'),
+    position: 'object-[center_25%]',
+    cta: { label: 'Shop Sarees', to: '/shop?search=saree' },
+    secondary: { label: "All Women's Wear", to: '/category/womens-wear' }
+  },
+  {
+    eyebrow: 'This Week Only',
+    title: 'Flash Sale',
+    highlight: 'Up to 30% Off',
+    text: 'Save on selected shirts, shoes, bags and accessories while stocks last.',
+    image: menImg,
+    position: 'object-top',
+    cta: { label: 'Shop the Sale', to: '/shop?sale=true&sort=deals' }
+  }
 ];
 
-const ProductRow = ({ title, link, products }) => (
+// Category tile images: bundled photos for clothing, product photos for the rest.
+const CATEGORY_IMAGES = {
+  'womens-wear': womenImg,
+  'mens-wear': menImg,
+  'kids-wear': kidsImg,
+  sportswear: imageUrl('/uploads/sportswear/rose-sports-bra-leggings-set.jpg'),
+  shoes: imageUrl('/uploads/shoes/suede-sneakers.jpg'),
+  bags: imageUrl('/uploads/bags/burgundy-leather-backpack.jpg'),
+  accessories: imageUrl('/uploads/accessories/leather-handbag.jpg')
+};
+
+const LOOKBOOK = [
+  { to: '/shop?search=saree', eyebrow: 'Festive edit', title: 'Silk Sarees', image: imageUrl('/uploads/ethnic/red-pink-bridal-saree.jpg'), position: 'object-[center_20%]' },
+  { to: '/category/sportswear', eyebrow: 'Move freely', title: 'Sportswear', image: imageUrl('/uploads/sportswear/white-tank-black-leggings.jpg') },
+  { to: '/category/bags', eyebrow: 'Carry it all', title: 'Bags', image: imageUrl('/uploads/bags/grey-mini-satchel.jpg') },
+  { to: '/category/shoes', eyebrow: 'Step out', title: 'Shoes', image: imageUrl('/uploads/shoes/white-pumps.jpg') },
+  { to: '/category/accessories', eyebrow: 'Finishing touch', title: 'Accessories', image: imageUrl('/uploads/accessories/white-minimal-watch.jpg') }
+];
+
+const BENEFITS = [
+  { icon: Truck, title: 'Islandwide Delivery', text: `Free on orders over ${formatPrice(FREE_DELIVERY_THRESHOLD)}` },
+  { icon: Banknote, title: 'Cash on Delivery', text: 'Pay when your parcel arrives' },
+  { icon: RefreshCw, title: '7-Day Exchanges', text: 'Easy size and style swaps' },
+  { icon: ShieldCheck, title: 'Secure Payments', text: 'Visa, Mastercard & Amex' },
+  { icon: Store, title: 'Visit Our Store', text: 'Kurunegala Junction, Dambulla' },
+  { icon: MessageCircle, title: 'WhatsApp Support', text: CONTACT.phoneDisplay }
+];
+
+const PRICE_LIMITS = [3000, 5000, 10000];
+
+const ProductRow = ({ eyebrow, title, subtitle, link, products }) => (
   products.length > 0 && (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div className="flex items-end justify-between mb-10">
-        <h2 className="text-2xl md:text-3xl font-light tracking-widest uppercase">{title}</h2>
-        <Link to={link} className="text-xs uppercase tracking-[0.2em] underline underline-offset-4 hover:no-underline whitespace-nowrap">View All</Link>
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-10">
-        {products.map((p) => <ProductCard key={p.id} product={p} />)}
+    <section className="shell py-16 md:py-20">
+      <SectionHeader eyebrow={eyebrow} title={title} subtitle={subtitle} link={link} />
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-4 sm:gap-x-6 gap-y-10">
+        {products.map((p, i) => (
+          // 2 rows of 2 on phones, 3 / 4 / 5 in one row on larger screens.
+          <div key={p.id} className={i === 4 ? 'hidden 2xl:block' : i === 3 ? 'md:hidden lg:block' : ''}>
+            <ProductCard product={p} />
+          </div>
+        ))}
       </div>
     </section>
   )
@@ -38,92 +102,120 @@ const Home = () => {
   usePageTitle();
   const { categories } = useCategories();
   const [newArrivals, setNewArrivals] = useState([]);
-  const [onSale, setOnSale] = useState([]);
+  const [bestSellers, setBestSellers] = useState([]);
 
   useEffect(() => {
-    axiosInstance.get('/products', { params: { new: true, limit: 4 } }).then((res) => setNewArrivals(res.data.data)).catch(() => {});
-    axiosInstance.get('/products', { params: { sale: true, limit: 4 } }).then((res) => setOnSale(res.data.data)).catch(() => {});
+    axiosInstance.get('/products', { params: { new: true, limit: 5 } }).then((res) => setNewArrivals(res.data.data)).catch(() => {});
+    axiosInstance.get('/products', { params: { bestSeller: true, limit: 5 } }).then((res) => setBestSellers(res.data.data)).catch(() => {});
   }, []);
-
-  const otherCategories = categories.filter((c) => !FEATURED.some((f) => f.slug === c.slug));
 
   return (
     <div className="min-h-screen bg-page font-sans text-luxe-dark">
       <Navbar />
 
-      {/* Hero */}
-      <div className="relative h-[85vh] min-h-[520px] pt-20">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-black/40 z-10"></div>
-          <img src={heroImg} alt="" className="w-full h-full object-cover" />
-        </div>
-        <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-4xl md:text-6xl font-light tracking-[0.2em] text-white uppercase mb-6">New Season</h1>
-          <p className="text-base md:text-xl text-gray-200 tracking-wider mb-10 max-w-2xl font-light">
-            Welcome to Dambulla City Clothing Shop. Discover the latest clothing, shoes and accessories at affordable prices.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Link to="/shop" className="bg-white text-black px-8 py-4 uppercase tracking-widest text-sm font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center group">
-              Shop Now
-              <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link to="/shop?new=true" className="border border-white text-white px-8 py-4 uppercase tracking-widest text-sm font-semibold hover:bg-white hover:text-black transition-colors">
-              New Arrivals
-            </Link>
-          </div>
-        </div>
-      </div>
+      <main id="main">
+        <HeroCarousel slides={SLIDES} />
+        <HeroSearch />
 
-      {/* Benefits */}
-      <div className="bg-surface border-b border-line">
-        <div className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-xs uppercase tracking-widest text-gray-600">
-          <div className="flex items-center gap-3"><Truck className="w-5 h-5 shrink-0" /> Free delivery over {formatPrice(FREE_DELIVERY_THRESHOLD)}</div>
-          <div className="flex items-center gap-3"><Banknote className="w-5 h-5 shrink-0" /> Cash on delivery</div>
-          <div className="flex items-center gap-3"><RefreshCw className="w-5 h-5 shrink-0" /> 7-day exchanges</div>
-          <div className="flex items-center gap-3"><ShieldCheck className="w-5 h-5 shrink-0" /> Secure payments</div>
-        </div>
-      </div>
+        {/* Benefits: icon cards */}
+        <section className="shell pt-12 md:pt-16" aria-label="Why shop with us">
+          <ul className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
+            {BENEFITS.map(({ icon: Icon, title, text }) => (
+              <li key={title} className="flex items-center gap-3 bg-surface border border-line rounded-2xl p-3 sm:p-4 hover:shadow-lg hover:shadow-black/5 hover:-translate-y-0.5 transition-all">
+                <span className="shrink-0 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-accent-soft text-accent flex items-center justify-center">
+                  <Icon className="w-5 h-5" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-xs sm:text-sm font-semibold text-luxe-dark">{title}</span>
+                  <span className="block text-[11px] sm:text-xs text-gray-600">{text}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
 
-      {/* Categories */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-light tracking-widest uppercase mb-4">Shop By Category</h2>
-          <div className="w-16 h-px bg-black mx-auto"></div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {FEATURED.map((category) => (
-            <Link to={`/category/${category.slug}`} key={category.slug} className="group relative h-80 md:h-96 overflow-hidden bg-gray-200 flex items-center justify-center">
-              <img src={category.image} alt={category.name} className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/10 group-hover:from-black/80 transition-colors duration-500"></div>
-              <div className="relative z-10 text-center">
-                <h3 className="text-2xl font-light tracking-widest text-white uppercase mb-3 drop-shadow-md">{category.name}</h3>
-                <span className="inline-block border-b border-white text-white tracking-widest text-xs pb-1">SHOP NOW</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        {otherCategories.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-            {otherCategories.map((c) => (
+        {/* Shop by category */}
+        <section className="shell py-16 md:py-20" aria-labelledby="cat-title">
+          <SectionHeader
+            center
+            id="cat-title"
+            eyebrow="Shop by category"
+            title="Something for Everyone"
+            subtitle="Clothing for the whole family, plus shoes, bags and accessories – all in one place."
+          />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-4">
+            {categories.map((c) => (
               <Link
-                key={c.slug}
                 to={`/category/${c.slug}`}
-                className="bg-surface border border-line py-8 text-center hover:border-black hover:shadow-sm transition-all"
+                key={c.slug}
+                className="group relative aspect-[3/4] overflow-hidden bg-page-alt rounded-2xl hover:shadow-xl hover:shadow-black/10 transition-shadow"
               >
-                <span className="block text-sm uppercase tracking-[0.2em] font-medium">{c.name}</span>
-                <span className="text-xs text-gray-500">{c.productCount} item{c.productCount === 1 ? '' : 's'}</span>
+                {CATEGORY_IMAGES[c.slug] && (
+                  <img
+                    src={CATEGORY_IMAGES[c.slug]}
+                    alt=""
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 text-white flex items-end justify-between gap-2">
+                  <div>
+                    <h3 className="text-base sm:text-xl font-light tracking-wide drop-shadow-md">{c.name}</h3>
+                    <span className="text-[11px] tracking-widest text-white/85">{c.productCount} item{c.productCount === 1 ? '' : 's'}</span>
+                  </div>
+                  <span className="shrink-0 w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
               </Link>
             ))}
           </div>
-        )}
-      </section>
 
-      <div className="bg-surface border-y border-line">
-        <ProductRow title="New Arrivals" link="/shop?new=true" products={newArrivals} />
-      </div>
-      <ProductRow title="On Sale" link="/shop?sale=true" products={onSale} />
+          {/* Shop by budget */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-gray-600 mr-1">
+              <Wallet className="w-4 h-4 text-accent" /> Shop by budget
+            </span>
+            {PRICE_LIMITS.map((amount) => (
+              <Link
+                key={amount}
+                to={`/shop?maxPrice=${amount}`}
+                className="rounded-full border border-line bg-surface px-5 py-2.5 text-xs font-semibold tracking-wide hover:border-accent hover:text-accent-dark transition-colors"
+              >
+                Under {formatPrice(amount)}
+              </Link>
+            ))}
+            <Link to="/shop?sale=true&sort=deals" className="rounded-full bg-red-600 text-white px-5 py-2.5 text-xs font-semibold tracking-wide hover:bg-red-700 transition-colors">
+              On Sale
+            </Link>
+          </div>
+        </section>
+
+        <FlashSale />
+
+        {/* Lookbook */}
+        <section className="shell py-16 md:py-20" aria-labelledby="lookbook-title">
+          <SectionHeader
+            id="lookbook-title"
+            eyebrow="The lookbook"
+            title="Styled for Sri Lankan Days"
+            subtitle="From festive silk sarees to gym-ready sets – explore our latest collections."
+            link="/shop"
+            linkLabel="Shop all"
+          />
+          <Lookbook tiles={LOOKBOOK} />
+        </section>
+
+        <div className="bg-surface border-y border-line">
+          <ProductRow eyebrow="Just landed" title="New Arrivals" subtitle="Fresh styles just landed in store" link="/shop?new=true" products={newArrivals} />
+        </div>
+        <ProductRow eyebrow="Customer favourites" title="Best Sellers" subtitle="The pieces our customers love most" link="/shop?bestSeller=true" products={bestSellers} />
+
+        <div className="bg-page-alt border-t border-line">
+          <HomeFaq image={imageUrl('/uploads/ethnic/white-cotton-kurti.jpg')} />
+        </div>
+      </main>
 
       <Footer />
     </div>

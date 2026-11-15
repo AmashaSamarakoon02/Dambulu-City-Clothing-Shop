@@ -30,6 +30,7 @@ const COLOR_SWATCHES = {
   mustard: '#E1AD01', olive: '#808000', denim: '#1560BD', nude: '#E3BC9A', multicolor: 'conic-gradient(red, yellow, lime, aqua, blue, magenta, red)',
   'blue aside': '#3E5F8A', 'black acid': '#3B3B3B', teal: '#00727A', burgundy: '#6D1A2E', 'olive green': '#556B2F',
   'sage green': '#A3B18A', lavender: '#C8A2C8', purple: '#6A4C93', grey: '#8A8A8A', orange: '#E07B39',
-  brown: '#6B4423', green: '#3E7D5A', blue: '#3A6EA5'
+  brown: '#6B4423', green: '#3E7D5A', blue: '#3A6EA5',
+  ivory: '#F4EEDC', tan: '#B5794A'
 };
 export const colorToCss = (color) => COLOR_SWATCHES[String(color).toLowerCase()] || color;

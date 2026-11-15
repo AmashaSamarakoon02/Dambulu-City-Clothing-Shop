@@ -85,7 +85,7 @@ const EmployeeProfile = () => {
     <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
 
-      <div className="flex-grow pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full">
+      <div className="flex-grow pt-24 md:pt-40 pb-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full">
         <div className="bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
           {/* Header Profile Cover */}
           <div className="bg-luxe-dark h-32 md:h-48 relative">

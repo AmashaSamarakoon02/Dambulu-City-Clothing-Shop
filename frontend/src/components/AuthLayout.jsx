@@ -7,7 +7,7 @@ import BrandLogo from './BrandLogo';
 const AuthLayout = ({ title, subtitle, children }) => (
   <div className="min-h-screen bg-page font-sans text-luxe-dark flex flex-col">
     <header className="border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div className="shell h-20 flex items-center justify-between">
         <Link
           to="/home"
           aria-label="Return to store"

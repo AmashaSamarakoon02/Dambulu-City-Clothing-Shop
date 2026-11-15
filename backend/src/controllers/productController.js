@@ -41,16 +41,18 @@ const getAllProducts = async (req, res) => {
 
     let products;
     let total;
-    if (req.query.sale === 'true') {
-      // "On sale" compares two columns, which Prisma can't express in `where`,
-      // so filter the (small) candidate set in memory.
+    if (req.query.sale === 'true' || sort === 'deals') {
+      // "On sale" and "biggest discount" compare two columns, which Prisma can't
+      // express in `where`/`orderBy`, so work on the (small) candidate set in memory.
       const candidates = await prisma.product.findMany({
-        where: { ...where, originalPrice: { not: null } },
+        where: req.query.sale === 'true' ? { ...where, originalPrice: { not: null } } : where,
         orderBy: SORT_OPTIONS[sort] || SORT_OPTIONS.newest
       });
-      const onSale = candidates.filter((p) => p.originalPrice > p.price);
-      total = onSale.length;
-      products = onSale.slice(skip, skip + limitNumber);
+      const discount = (p) => (p.originalPrice && p.originalPrice > p.price ? 1 - p.price / p.originalPrice : 0);
+      let list = req.query.sale === 'true' ? candidates.filter((p) => discount(p) > 0) : candidates;
+      if (sort === 'deals') list = [...list].sort((a, b) => discount(b) - discount(a));
+      total = list.length;
+      products = list.slice(skip, skip + limitNumber);
     } else {
       [products, total] = await Promise.all([
         prisma.product.findMany({

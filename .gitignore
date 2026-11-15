@@ -11,6 +11,14 @@ Agent.md
 Agents.md
 Claude.md
 .claude/
+**/CLAUDE.md
+**/AGENTS.md
+.cursor/
+.cursorrules
+GEMINI.md
+.windsurfrules
+.github/copilot-instructions.md
+.aider*
 
 # Operating system files
 .DS_Store

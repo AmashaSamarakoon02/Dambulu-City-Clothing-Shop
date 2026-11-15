@@ -13,10 +13,34 @@ const SORT_OPTIONS = [
   { value: 'newest', label: 'Newest' },
   { value: 'price_asc', label: 'Price: Low to High' },
   { value: 'price_desc', label: 'Price: High to Low' },
+  { value: 'deals', label: 'Deals: Biggest Discount' },
   { value: 'name', label: 'Name: A–Z' }
 ];
 
-const FILTER_KEYS = ['category', 'size', 'color', 'minPrice', 'maxPrice', 'new', 'sale', 'inStock', 'search'];
+const PAGE_SIZE = 20;
+
+// Size filter: group and order sizes so they read naturally (S, M, L… then kids ages, then numbers).
+const LETTER_SIZES = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', 'XXXL', '3XL'];
+const groupSizes = (sizes) => {
+  const letter = [];
+  const kids = [];
+  const numeric = [];
+  const other = [];
+  sizes.forEach((size) => {
+    const s = String(size).trim();
+    if (LETTER_SIZES.includes(s.toUpperCase())) letter.push(s);
+    else if (/^\d+(\.\d+)?$/.test(s)) numeric.push(s);
+    else if (/^\d+\s*(-\s*\d+\s*)?Y/i.test(s)) kids.push(s);
+    else other.push(s);
+  });
+  letter.sort((a, b) => LETTER_SIZES.indexOf(a.toUpperCase()) - LETTER_SIZES.indexOf(b.toUpperCase()));
+  kids.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+  numeric.sort((a, b) => Number(a) - Number(b));
+  other.sort((a, b) => a.localeCompare(b));
+  return [['Clothing', letter], ['Kids (age)', kids], ['Shoes & waist', numeric], ['Other', other]].filter(([, list]) => list.length);
+};
+
+const FILTER_KEYS = ['category', 'size', 'color', 'minPrice', 'maxPrice', 'new', 'sale', 'bestSeller', 'inStock', 'search'];
 
 const FilterSection = ({ title, children }) => (
   <div className="border-b border-gray-200 py-5">
@@ -47,6 +71,7 @@ const Shop = () => {
     ? `Results for "${params.search}"`
     : params.sale === 'true' ? 'Sale'
     : params.new === 'true' ? 'New Arrivals'
+    : params.bestSeller === 'true' ? 'Best Sellers'
     : category ? nameFor(category)
     : 'Shop All';
   usePageTitle(title);
@@ -57,7 +82,7 @@ const Shop = () => {
     let stale = false;
     setLoading(true);
     setError('');
-    axiosInstance.get('/products', { params: { ...Object.fromEntries(new URLSearchParams(queryString)), category, limit: 12 } })
+    axiosInstance.get('/products', { params: { ...Object.fromEntries(new URLSearchParams(queryString)), category, limit: PAGE_SIZE } })
       .then((res) => {
         if (stale) return;
         setProducts(res.data.data);
@@ -120,6 +145,10 @@ const Shop = () => {
     updateParams({ minPrice: priceDraft.min, maxPrice: priceDraft.max });
   };
 
+  const sizeGroups = groupSizes(facets.sizes);
+  const firstShown = (meta.page - 1) * PAGE_SIZE + 1;
+  const lastShown = Math.min(meta.page * PAGE_SIZE, meta.total);
+
   const filterPanel = (
     <div>
       {!slug && (
@@ -146,17 +175,25 @@ const Shop = () => {
 
       {facets.sizes.length > 0 && (
         <FilterSection title="Size">
-          <div className="flex flex-wrap gap-2">
-            {facets.sizes.map((size) => (
-              <button
-                key={size}
-                onClick={() => toggleParam('size', size)}
-                className={`min-w-10 px-3 py-2 text-xs border transition-colors ${
-                  params.size === size ? 'bg-black text-white border-black' : 'border-gray-300 hover:border-black'
-                }`}
-              >
-                {size}
-              </button>
+          <div className="space-y-4">
+            {sizeGroups.map(([group, list]) => (
+              <div key={group}>
+                {sizeGroups.length > 1 && <p className="text-[10px] uppercase tracking-[0.15em] text-gray-500 mb-2">{group}</p>}
+                <div className="flex flex-wrap gap-2">
+                  {list.map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => toggleParam('size', size)}
+                      aria-pressed={params.size === size}
+                      className={`min-w-10 px-3 py-2 text-xs border rounded-lg transition-colors ${
+                        params.size === size ? 'bg-black text-white border-black' : 'border-gray-300 bg-white hover:border-black'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </FilterSection>
@@ -187,16 +224,16 @@ const Shop = () => {
             <input
               type="number" min="0" inputMode="numeric" placeholder={String(facets.minPrice || 'Min')}
               value={priceDraft.min} onChange={(e) => setPriceDraft((p) => ({ ...p, min: e.target.value }))}
-              className="w-full border border-gray-300 px-3 py-2 text-sm outline-none focus:border-black" aria-label="Minimum price"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white outline-none focus:border-black" aria-label="Minimum price"
             />
             <span className="text-gray-500">–</span>
             <input
               type="number" min="0" inputMode="numeric" placeholder={String(facets.maxPrice || 'Max')}
               value={priceDraft.max} onChange={(e) => setPriceDraft((p) => ({ ...p, max: e.target.value }))}
-              className="w-full border border-gray-300 px-3 py-2 text-sm outline-none focus:border-black" aria-label="Maximum price"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white outline-none focus:border-black" aria-label="Maximum price"
             />
           </div>
-          <button type="submit" className="w-full border border-black py-2 text-[11px] uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-colors">
+          <button type="submit" className="w-full rounded-full border border-black py-2 text-[11px] uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-colors">
             Apply
           </button>
         </form>
@@ -239,6 +276,7 @@ const Shop = () => {
     new: 'New arrivals',
     sale: 'On sale',
     inStock: 'In stock',
+    bestSeller: 'Best sellers',
     search: `“${params.search}”`
   }[key]);
 
@@ -246,7 +284,7 @@ const Shop = () => {
     <div className="min-h-screen flex flex-col bg-page font-sans text-luxe-dark">
       <Navbar />
 
-      <main className="flex-grow pt-32 md:pt-44 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+      <main id="main" className="flex-grow pt-24 md:pt-40 pb-16 shell">
         <nav className="text-[11px] text-gray-500 uppercase tracking-widest mb-4">
           <Link to="/home" className="hover:text-black">Home</Link>
           <span className="mx-2">/</span>
@@ -262,13 +300,13 @@ const Shop = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl md:text-4xl font-light tracking-widest uppercase">{title}</h1>
-            <p className="text-sm text-gray-500 tracking-wider mt-2">{loading ? 'Loading…' : `${meta.total} item${meta.total === 1 ? '' : 's'}`}</p>
+            <p className="text-sm text-gray-500 tracking-wider mt-2">{loading ? 'Loading…' : meta.total === 0 ? 'No products' : meta.totalPages > 1 ? `Showing ${firstShown}–${lastShown} of ${meta.total} products` : `${meta.total} product${meta.total === 1 ? '' : 's'}`}</p>
           </div>
 
           <div className="flex items-center gap-3">
             <button
               onClick={() => setFiltersOpen(true)}
-              className="lg:hidden flex items-center px-4 py-2.5 border border-gray-300 text-xs tracking-widest uppercase hover:border-black"
+              className="lg:hidden flex items-center rounded-full px-4 py-2.5 border border-gray-300 bg-white text-xs tracking-widest uppercase hover:border-black"
             >
               <SlidersHorizontal className="h-4 w-4 mr-2" /> Filter {activeFilters.length > 0 && `(${activeFilters.length})`}
             </button>
@@ -277,7 +315,7 @@ const Shop = () => {
               id="sort"
               value={sort}
               onChange={(e) => updateParams({ sort: e.target.value === 'newest' ? '' : e.target.value })}
-              className="border border-gray-300 px-3 py-2.5 text-xs uppercase tracking-widest bg-white outline-none focus:border-black"
+              className="border border-gray-300 rounded-full px-4 py-2.5 text-xs uppercase tracking-widest bg-white outline-none focus:border-black"
             >
               {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
             </select>
@@ -290,7 +328,8 @@ const Shop = () => {
               <button
                 key={key}
                 onClick={() => updateParams({ [key]: '' })}
-                className="flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 text-xs"
+                className="flex items-center gap-1.5 bg-accent-soft text-accent-dark hover:bg-[#e8d8c3] rounded-full px-3.5 py-1.5 text-xs font-medium"
+                aria-label={`Remove filter ${chipLabel(key)}`}
               >
                 {chipLabel(key)} <X className="w-3 h-3" />
               </button>
@@ -299,7 +338,7 @@ const Shop = () => {
         )}
 
         <div className="flex gap-10">
-          <aside className="hidden lg:block w-60 shrink-0 -mt-5">{filterPanel}</aside>
+          <aside className="hidden lg:block w-60 shrink-0 -mt-5 self-start sticky top-40 max-h-[calc(100vh-11rem)] overflow-y-auto pr-2" aria-label="Product filters">{filterPanel}</aside>
 
           <div className="flex-1 min-w-0">
             {error ? (
@@ -308,10 +347,10 @@ const Shop = () => {
                 <button onClick={() => setReloadKey((k) => k + 1)} className="underline text-sm">Retry</button>
               </div>
             ) : loading ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-10">
-                {[...Array(6)].map((_, i) => (
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-4 sm:gap-x-6 gap-y-10">
+                {[...Array(10)].map((_, i) => (
                   <div key={i} className="animate-pulse">
-                    <div className="bg-gray-200 aspect-[3/4] mb-4"></div>
+                    <div className="bg-gray-200 aspect-[3/4] mb-4 rounded-xl"></div>
                     <div className="h-4 bg-gray-200 w-3/4 mb-2"></div>
                     <div className="h-4 bg-gray-200 w-1/4"></div>
                   </div>
@@ -334,7 +373,7 @@ const Shop = () => {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-10">
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-4 sm:gap-x-6 gap-y-10">
                   {products.map((product) => <ProductCard key={product.id} product={product} />)}
                 </div>
 
@@ -343,7 +382,7 @@ const Shop = () => {
                     <button
                       onClick={() => goToPage(page - 1)}
                       disabled={page <= 1}
-                      className="w-10 h-10 flex items-center justify-center border border-gray-300 disabled:opacity-40 hover:border-black"
+                      className="w-10 h-10 rounded-full flex items-center justify-center border border-gray-300 disabled:opacity-40 hover:border-black"
                       aria-label="Previous page"
                     >
                       <ChevronLeft className="w-4 h-4" />
@@ -352,7 +391,9 @@ const Shop = () => {
                       <button
                         key={i}
                         onClick={() => goToPage(i + 1)}
-                        className={`w-10 h-10 text-sm border ${page === i + 1 ? 'bg-black text-white border-black' : 'border-gray-300 hover:border-black'}`}
+                        aria-current={page === i + 1 ? 'page' : undefined}
+                        aria-label={`Page ${i + 1}`}
+                        className={`w-10 h-10 rounded-full text-sm border ${page === i + 1 ? 'bg-black text-white border-black' : 'border-gray-300 hover:border-black'}`}
                       >
                         {i + 1}
                       </button>
@@ -360,7 +401,7 @@ const Shop = () => {
                     <button
                       onClick={() => goToPage(page + 1)}
                       disabled={page >= meta.totalPages}
-                      className="w-10 h-10 flex items-center justify-center border border-gray-300 disabled:opacity-40 hover:border-black"
+                      className="w-10 h-10 rounded-full flex items-center justify-center border border-gray-300 disabled:opacity-40 hover:border-black"
                       aria-label="Next page"
                     >
                       <ChevronRight className="w-4 h-4" />
