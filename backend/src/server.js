@@ -17,6 +17,11 @@ const { ALLOWED_ORIGINS } = require('./utils/siteUrls');
 
 const PORT = process.env.PORT || 5000;
 
+// Fail loudly in the logs if a required setting is missing (e.g. on Railway → Variables).
+['DATABASE_URL', 'JWT_SECRET'].forEach((key) => {
+  if (!process.env[key]) console.error(`[config] ${key} is not set – logins and/or the database will not work until it is added.`);
+});
+
 const app = express();
 
 // Railway (and Vercel's /api proxy) sit in front of the app: trust their
