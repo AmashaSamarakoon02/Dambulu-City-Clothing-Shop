@@ -62,7 +62,7 @@ const AdminUsers = () => {
   const counts = users.reduce((acc, u) => ({ ...acc, [u.role]: (acc[u.role] || 0) + 1 }), {});
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 md:p-8">
+    <div className="bg-white border border-line rounded-2xl shadow-sm shadow-black/5 p-5 md:p-8">
       <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
         <h2 className="text-xl font-light tracking-wide flex items-center gap-3"><Users className="h-5 w-5" /> Customer Accounts</h2>
         <div className="flex flex-wrap gap-3 text-xs uppercase tracking-widest text-gray-500">

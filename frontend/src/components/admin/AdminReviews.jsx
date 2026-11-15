@@ -44,7 +44,7 @@ const AdminReviews = () => {
   if (loading) return <div className="p-8 text-center animate-pulse">Loading reviews...</div>;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 md:p-8">
+    <div className="bg-white border border-line rounded-2xl shadow-sm shadow-black/5 p-5 md:p-8">
       {error && <div className="mb-6 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded">{error}</div>}
       <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
         <h2 className="text-2xl font-light tracking-wide text-gray-900 flex items-center">

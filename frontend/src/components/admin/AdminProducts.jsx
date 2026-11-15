@@ -56,7 +56,7 @@ const ChipPicker = ({ values, onChange, presets, placeholder, renderSwatch }) =>
   );
 };
 
-const AdminProducts = ({ initialLowStock = false }) => {
+const AdminProducts = ({ initialLowStock = false, initialAdd = false }) => {
   const { categories, nameFor } = useCategories();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -80,6 +80,16 @@ const AdminProducts = ({ initialLowStock = false }) => {
   useEffect(() => {
     setLowStockOnly(initialLowStock);
   }, [initialLowStock]);
+
+  // Opened from a quick "Add product" button: show the empty form once categories have loaded.
+  const openedFromLink = useRef(false);
+  useEffect(() => {
+    if (initialAdd && !openedFromLink.current && categories.length) {
+      openedFromLink.current = true;
+      handleOpenModal();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialAdd, categories.length]);
 
   const fetchProducts = async () => {
     try {
@@ -240,14 +250,14 @@ const AdminProducts = ({ initialLowStock = false }) => {
   if (loading) return <div className="flex justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-gray-500" /></div>;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 md:p-8">
+    <div className="bg-white border border-line rounded-2xl shadow-sm shadow-black/5 p-5 md:p-8">
       <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
         <h2 className="text-xl font-light tracking-wide flex items-center gap-3">
           <Package className="h-5 w-5" /> Products <span className="text-sm text-gray-500">({products.length})</span>
         </h2>
         <button
           onClick={() => handleOpenModal()}
-          className="bg-black text-white px-4 py-2.5 text-xs uppercase tracking-widest flex items-center gap-2 hover:bg-gray-800"
+          className="bg-[#1c1c1c] text-white px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-widest flex items-center gap-2 hover:bg-accent-dark transition-colors"
         >
           <Plus className="w-4 h-4" /> Add Product
         </button>

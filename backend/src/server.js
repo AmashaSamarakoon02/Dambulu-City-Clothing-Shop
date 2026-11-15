@@ -13,13 +13,20 @@ const uploadRoutes = require('./routes/uploadRoutes');
 const miscRoutes = require('./routes/miscRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const { UPLOADS_DIR } = require('./middlewares/uploadMiddleware');
+const { ALLOWED_ORIGINS } = require('./utils/siteUrls');
 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
 
+// Railway (and Vercel's /api proxy) sit in front of the app: trust their
+// X-Forwarded-* headers so req.protocol / req.ip are correct.
+app.set('trust proxy', 1);
+
+// Allowed browser origins: local dev + the Vercel site by default,
+// or a comma-separated list in CORS_ORIGIN.
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: ALLOWED_ORIGINS,
   credentials: true
 }));
 app.use(express.json());

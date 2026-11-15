@@ -6,6 +6,8 @@ export const SHOP_NAME = 'Dambulla City Clothing Shop';
 const SIZES = {
   // Storefront header: must fit beside the icons on phones
   header: { main: 'text-base sm:text-xl lg:text-2xl tracking-[0.16em] sm:tracking-[0.2em]', sub: 'text-[9px] sm:text-[10px] tracking-[0.35em] sm:tracking-[0.45em]' },
+  // Admin sidebar (260px wide)
+  sidebar: { main: 'text-lg tracking-[0.18em]', sub: 'text-[9px] tracking-[0.4em]' },
   // Account pages (login, sign up, …)
   page: { main: 'text-xl sm:text-2xl tracking-[0.2em]', sub: 'text-[10px] tracking-[0.45em]' }
 };

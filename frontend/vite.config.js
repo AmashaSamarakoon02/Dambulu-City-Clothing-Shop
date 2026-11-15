@@ -8,4 +8,10 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
+  // Always use port 5173 (the backend only allows this origin). If it is busy,
+  // stop with an error instead of silently moving to 5174, where the API is blocked.
+  server: {
+    port: 5173,
+    strictPort: true
+  },
 })

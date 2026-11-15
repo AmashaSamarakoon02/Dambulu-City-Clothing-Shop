@@ -62,7 +62,7 @@ const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => (
   { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]
 ));
 const lkr = (amount) => `LKR ${Number(amount).toLocaleString('en-LK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+const { CLIENT_URL } = require('./siteUrls');
 
 const sendOrderConfirmationEmail = (order) => {
   const link = `${CLIENT_URL}/orders/${order.id}`;

@@ -12,7 +12,7 @@ const PROFILE_SELECT = {
   address: true, department: true, employeeId: true, createdAt: true
 };
 
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+const { CLIENT_URL } = require('../utils/siteUrls');
 const VERIFY_TOKEN_TTL = 24 * 60 * 60 * 1000; // 24 hours
 const RESET_TOKEN_TTL = 60 * 60 * 1000; // 1 hour
 

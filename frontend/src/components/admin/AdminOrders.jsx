@@ -174,7 +174,7 @@ const AdminOrders = ({ initialStatus = '' }) => {
   const closeDrawer = useCallback(() => setSelectedId(null), []);
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 md:p-8">
+    <div className="bg-white border border-line rounded-2xl shadow-sm shadow-black/5 p-5 md:p-8">
       <h2 className="text-xl font-light tracking-wide mb-6 flex items-center gap-3"><ShoppingBag className="w-5 h-5" /> Orders Management</h2>
 
       <div className="flex gap-2 overflow-x-auto pb-2 mb-4">
