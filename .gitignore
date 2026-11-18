@@ -32,3 +32,9 @@ desktop.ini
 # Logs
 *.log
 npm-debug.log*
+
+# Environment files – never commit (frontend falls back to /api in production)
+.env
+.env.*
+**/.env
+**/.env.*

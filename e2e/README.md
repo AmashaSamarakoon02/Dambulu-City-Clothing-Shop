@@ -31,7 +31,7 @@ Playwright + TypeScript, strict Page Object Model. Runs against the live deploym
 cd e2e
 npm ci
 npx playwright install
-cp .env.example .env        # set TEST_USER_EMAIL / TEST_USER_PASSWORD
+# create a .env file here with: BASE_URL, API_URL, TEST_USER_EMAIL, TEST_USER_PASSWORD
 npm test                    # everything: setup + api + 4 browser projects
 npm run report              # open the HTML report
 ```
