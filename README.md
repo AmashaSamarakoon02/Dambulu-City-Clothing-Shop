@@ -63,4 +63,8 @@ An online clothing store for **Dambulla City Clothing Shop** (Dambulla, Sri Lank
 
 ## Test Automation
 
+[![E2E Tests](https://github.com/AmashaSamarakoon02/Dambulu-City-Clothing-Shop/actions/workflows/e2e-tests.yml/badge.svg)](https://github.com/AmashaSamarakoon02/Dambulu-City-Clothing-Shop/actions/workflows/e2e-tests.yml)
+
 End-to-end UI + API tests (Playwright, TypeScript, Page Object Model, Allure report) live in [`e2e/`](e2e/README.md).
+
+📊 [Live Test Report](https://amashasamarakoon02.github.io/Dambulu-City-Clothing-Shop/) · ⚙️ [CI Runs](https://github.com/AmashaSamarakoon02/Dambulu-City-Clothing-Shop/actions/workflows/e2e-tests.yml)
