@@ -60,3 +60,7 @@ An online clothing store for **Dambulla City Clothing Shop** (Dambulla, Sri Lank
    Then sign in at `http://localhost:5173/admin/login`.
 
 > Card payments use a demo payment page (no real money is charged). Test card: `4242 4242 4242 4242`.
+
+## Test Automation
+
+End-to-end UI + API tests (Playwright, TypeScript, Page Object Model, Allure report) live in [`e2e/`](e2e/README.md).

@@ -1,0 +1,10 @@
+{
+  "invalid": {
+    "email": "not.a.user@example.com",
+    "password": "WrongPassword123"
+  },
+  "malformedEmail": {
+    "email": "not-an-email",
+    "password": "whatever1"
+  }
+}

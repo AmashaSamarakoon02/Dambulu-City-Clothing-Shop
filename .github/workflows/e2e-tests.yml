@@ -1,0 +1,94 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+    paths: ['e2e/**', '.github/workflows/e2e-tests.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: e2e-tests
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: Playwright (API + Chromium)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: e2e
+    env:
+      CI: 'true'
+      # URLs default to production in playwright.config.ts; override with repo variables if needed.
+      BASE_URL: ${{ vars.BASE_URL }}
+      API_URL: ${{ vars.API_URL }}
+      # Without these secrets the logged-in tests are skipped; guest + API tests still run.
+      TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+      TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: e2e/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run tests
+        run: npx playwright test --project=api --project=chromium
+
+      - name: Build Allure report
+        if: ${{ !cancelled() }}
+        run: npx allure generate allure-results
+
+      - name: Upload Allure report (artifact)
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: e2e/allure-report
+          retention-days: 30
+
+      - name: Upload Playwright HTML report (artifact)
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: e2e/playwright-report
+          retention-days: 30
+
+      - name: Upload report for GitHub Pages
+        if: ${{ !cancelled() && vars.ALLURE_PAGES == 'true' }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: e2e/allure-report
+
+  deploy-report:
+    name: Publish Allure report to GitHub Pages
+    needs: test
+    # Runs only after Pages is enabled (Settings > Pages > Source: GitHub Actions)
+    # and the repo variable ALLURE_PAGES is set to "true".
+    if: ${{ !cancelled() && vars.ALLURE_PAGES == 'true' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

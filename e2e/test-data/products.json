@@ -1,0 +1,21 @@
+{
+  "reference": {
+    "id": 29,
+    "name": "White Linen Long Sleeve Shirt",
+    "category": "mens-wear",
+    "categoryName": "Men's Wear",
+    "sizes": ["M", "L", "XL"],
+    "color": "White"
+  },
+  "unknownId": 999999,
+  "malformedId": "abc",
+  "categories": ["mens-wear", "womens-wear", "kids-wear", "shoes", "accessories", "sportswear", "bags"],
+  "searchTerms": {
+    "valid": "shirt",
+    "noResults": "zzzz-no-such-product"
+  },
+  "delivery": {
+    "fee": 350,
+    "freeOver": 10000
+  }
+}
