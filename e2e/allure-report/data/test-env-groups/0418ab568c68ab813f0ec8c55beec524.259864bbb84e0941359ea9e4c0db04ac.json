@@ -1,0 +1,1 @@
+{"id":"0418ab568c68ab813f0ec8c55beec524.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/auth-flows.api.spec.ts › Auth API: register conflicts › registering an existing verified email returns 400 EMAIL_TAKEN","name":"registering an existing verified email returns 400 EMAIL_TAKEN","status":"passed","testResultsByEnv":{"default":"8629570c48a92a20fb2161973e7f0757"}}

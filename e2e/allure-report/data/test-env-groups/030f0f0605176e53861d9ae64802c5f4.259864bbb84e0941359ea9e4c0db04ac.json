@@ -1,0 +1,1 @@
+{"id":"030f0f0605176e53861d9ae64802c5f4.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/products-contract.api.spec.ts › Products API: staff-only routes reject others (productRoutes.js) › POST /products as a customer returns 403","name":"POST /products as a customer returns 403","status":"passed","testResultsByEnv":{"default":"6fa586d1a11bceb2a73d953b92b4bfd5"}}

@@ -14,8 +14,8 @@
     "typecheck": "tsc --noEmit",
     "test:smoke": "playwright test --grep @smoke",
     "test:mobile": "playwright test --project=mobile-chrome",
-    "test:allure": "allure run -- playwright test",
-    "allure:generate": "allure generate allure-results",
+    "test:allure": "node scripts/test-allure.mjs",
+    "allure:generate": "node scripts/redact-allure-results.mjs && allure generate allure-results",
     "allure:open": "allure open allure-report"
   },
   "keywords": [],

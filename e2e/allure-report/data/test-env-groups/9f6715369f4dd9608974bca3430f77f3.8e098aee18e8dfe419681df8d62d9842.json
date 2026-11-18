@@ -1,0 +1,1 @@
+{"id":"9f6715369f4dd9608974bca3430f77f3.8e098aee18e8dfe419681df8d62d9842","fullName":"ui/checkout.spec.ts › Checkout (logged in) › with items in the cart › client-side validation (order submission blocked) › an invalid postal code is rejected","name":"an invalid postal code is rejected","status":"passed","testResultsByEnv":{"default":"7500c17249a58665442d338705d633e8"}}

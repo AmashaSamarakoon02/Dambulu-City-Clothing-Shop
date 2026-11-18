@@ -84,7 +84,8 @@ export default defineConfig({
     baseURL: BASE_URL,
     extraHTTPHeaders: vercelBypassHeaders,
     testIdAttribute: 'data-testid',
-    trace: 'retain-on-failure',
+    // Traces record typed values (passwords), so never produce them on CI where reports are published.
+    trace: isCI ? 'off' : 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     actionTimeout: 15_000,

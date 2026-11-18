@@ -1,0 +1,1 @@
+{"id":"9880e7c25e8f33f01a6cb30edcac27eb.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/auth.api.spec.ts › Auth API: login › valid credentials return the user and set an httpOnly jwt cookie","name":"valid credentials return the user and set an httpOnly jwt cookie","status":"passed","testResultsByEnv":{"default":"98907d63507314952dfa29d82736bdb1"}}

@@ -1,0 +1,1 @@
+{"id":"1900a96a3b130406652da99dd2ea19be.5bd835b0d6b1d4ada3b9f0db936e82c8","fullName":"ui/login.spec.ts › Login page (guest) › wrong credentials show the API error and stay on /login","name":"wrong credentials show the API error and stay on /login","status":"passed","testResultsByEnv":{"default":"a29bc04397d021ef1055177b5552a20e"}}

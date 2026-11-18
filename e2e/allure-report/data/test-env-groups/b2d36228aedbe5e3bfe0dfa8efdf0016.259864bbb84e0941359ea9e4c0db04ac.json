@@ -1,0 +1,1 @@
+{"id":"b2d36228aedbe5e3bfe0dfa8efdf0016.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/auth.api.spec.ts › Auth API: session › GET /auth/check and /auth/profile return the logged-in customer @smoke","name":"GET /auth/check and /auth/profile return the logged-in customer @smoke","status":"passed","testResultsByEnv":{"default":"89cff3b261701f7f27af813eac721ec4"}}

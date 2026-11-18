@@ -66,15 +66,18 @@ Report name and output are set in `allurerc.mjs`.
 
 ### CI and the live report (`.github/workflows/e2e-tests.yml`)
 On every push that touches `e2e/` (or manually via **Run workflow**), GitHub Actions
-runs the API tests and the Chromium UI tests, builds the Allure report, and uploads
-it as a build artifact. One-time setup to publish it at
-**https://amashasamarakoon02.github.io/Dambulu-City-Clothing-Shop/**:
+runs the API tests and the Chromium UI tests and uploads a fresh Allure report as a build artifact.
 
-1. Repo **Settings → Secrets and variables → Actions → Secrets**: add `TEST_USER_EMAIL` and `TEST_USER_PASSWORD`.
-   (Without them, the logged-in tests are skipped and the guest/API tests still run.)
-2. Repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-3. Repo **Settings → Secrets and variables → Actions → Variables**: add `ALLURE_PAGES` = `true`.
-   The deploy job only runs when this is set, so the workflow never fails before Pages is enabled.
+The **Live Test Report** is the committed `e2e/allure-report/`, served by GitHub Pages at
+**https://amashasamarakoon02.github.io/Dambulu-City-Clothing-Shop/** (the root `index.html` redirects to it).
+
+One-time setup: repo **Settings → Pages → Build and deployment → Source: Deploy from a branch → `main` / `(root)` → Save**.
+Optionally add repo secrets `TEST_USER_EMAIL` / `TEST_USER_PASSWORD` so CI also runs the logged-in tests.
+
+To refresh the live report: `npm run test:allure` (runs the tests, masks credentials, builds the report),
+then commit `e2e/allure-report` and `e2e/allure-results`.
+`npm run allure:generate` always runs `scripts/redact-allure-results.mjs` first, so the
+TEST_USER password and email are replaced with `******` before anything is published.
 
 ## Production safety (read this)
 

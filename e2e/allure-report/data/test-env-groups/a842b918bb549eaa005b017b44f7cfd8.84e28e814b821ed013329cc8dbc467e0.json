@@ -1,0 +1,1 @@
+{"id":"a842b918bb549eaa005b017b44f7cfd8.84e28e814b821ed013329cc8dbc467e0","fullName":"ui/checkout.spec.ts › Checkout (logged in) › with items in the cart › client-side validation (order submission blocked) › empty required fields are all flagged","name":"empty required fields are all flagged","status":"passed","testResultsByEnv":{"default":"438b02ef9cfd4e13c3520a778c210c07"}}

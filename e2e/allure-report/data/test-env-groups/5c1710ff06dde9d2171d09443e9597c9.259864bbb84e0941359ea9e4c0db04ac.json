@@ -1,0 +1,1 @@
+{"id":"5c1710ff06dde9d2171d09443e9597c9.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/auth-flows.api.spec.ts › Auth API: portals and logout › logout clears the session cookie","name":"logout clears the session cookie","status":"passed","testResultsByEnv":{"default":"364ff0cd13c3784ee935c281b067bfda"}}

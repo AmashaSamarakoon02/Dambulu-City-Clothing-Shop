@@ -1,0 +1,1 @@
+{"id":"c91f0625e38d2e074c2c9a26ea08483c.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/auth.api.spec.ts › Auth API: login › a malformed email returns 400 with a field error","name":"a malformed email returns 400 with a field error","status":"passed","testResultsByEnv":{"default":"5c8a3b45e9889314697aae70338b2f6e"}}

@@ -3,13 +3,16 @@ name: E2E Tests
 on:
   push:
     branches: [main]
-    paths: ['e2e/**', '.github/workflows/e2e-tests.yml']
+    # The committed report itself (e2e/allure-report, e2e/allure-results) does not trigger a run.
+    paths:
+      - 'e2e/**'
+      - '!e2e/allure-report/**'
+      - '!e2e/allure-results/**'
+      - '.github/workflows/e2e-tests.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: e2e-tests
@@ -52,9 +55,10 @@ jobs:
       - name: Run tests
         run: npx playwright test --project=api --project=chromium
 
-      - name: Build Allure report
+      # Masks TEST_USER_* values in allure-results, then builds allure-report.
+      - name: Build Allure report (credentials masked)
         if: ${{ !cancelled() }}
-        run: npx allure generate allure-results
+        run: npm run allure:generate
 
       - name: Upload Allure report (artifact)
         if: ${{ !cancelled() }}
@@ -63,32 +67,3 @@ jobs:
           name: allure-report
           path: e2e/allure-report
           retention-days: 30
-
-      - name: Upload Playwright HTML report (artifact)
-        if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: e2e/playwright-report
-          retention-days: 30
-
-      - name: Upload report for GitHub Pages
-        if: ${{ !cancelled() && vars.ALLURE_PAGES == 'true' }}
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: e2e/allure-report
-
-  deploy-report:
-    name: Publish Allure report to GitHub Pages
-    needs: test
-    # Runs only after Pages is enabled (Settings > Pages > Source: GitHub Actions)
-    # and the repo variable ALLURE_PAGES is set to "true".
-    if: ${{ !cancelled() && vars.ALLURE_PAGES == 'true' }}
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v4

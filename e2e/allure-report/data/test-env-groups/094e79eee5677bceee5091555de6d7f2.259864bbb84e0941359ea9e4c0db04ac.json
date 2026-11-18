@@ -1,0 +1,1 @@
+{"id":"094e79eee5677bceee5091555de6d7f2.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/auth.api.spec.ts › Auth API: register validation › a password shorter than 8 characters is rejected","name":"a password shorter than 8 characters is rejected","status":"passed","testResultsByEnv":{"default":"c3785711f3b09bc5faf4486bad068476"}}

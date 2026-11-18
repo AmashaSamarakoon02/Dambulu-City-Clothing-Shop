@@ -1,0 +1,1 @@
+{"id":"3d7823ab92515f55b87cc8fcad83f34f.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/customer.api.spec.ts › Orders API (customer) › GET /orders/delivery is forbidden for a normal customer","name":"GET /orders/delivery is forbidden for a normal customer","status":"passed","testResultsByEnv":{"default":"130db66d77abf32d1e827c29c0c866ca"}}

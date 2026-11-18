@@ -1,0 +1,1 @@
+{"id":"56f81e96cb02ad2d9e219eb1a46c30c2.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/catalog.api.spec.ts › Reviews API › GET /reviews/product/:id returns a list","name":"GET /reviews/product/:id returns a list","status":"passed","testResultsByEnv":{"default":"3e82580d0ecc48a177012d5765e4c981"}}

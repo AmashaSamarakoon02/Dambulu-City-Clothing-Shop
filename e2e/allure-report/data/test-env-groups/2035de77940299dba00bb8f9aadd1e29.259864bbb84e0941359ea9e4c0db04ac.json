@@ -1,0 +1,1 @@
+{"id":"2035de77940299dba00bb8f9aadd1e29.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/catalog.api.spec.ts › Categories API › GET /categories returns every store category with a product count @smoke","name":"GET /categories returns every store category with a product count @smoke","status":"passed","testResultsByEnv":{"default":"c5c1fd3ea98f3e27743b49f2918d962f"}}

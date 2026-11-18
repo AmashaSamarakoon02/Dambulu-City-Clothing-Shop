@@ -1,0 +1,1 @@
+{"id":"22c2a1a826221a39943370adfcdf9225.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/customer.api.spec.ts › Protected endpoints reject guests › GET /wishlist without a cookie returns 401","name":"GET /wishlist without a cookie returns 401","status":"passed","testResultsByEnv":{"default":"cb265008e06c26e5dabf2c968e82b695"}}

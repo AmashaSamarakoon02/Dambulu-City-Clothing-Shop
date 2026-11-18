@@ -1,0 +1,1 @@
+{"id":"6a3bdd61a6a6e7baace20c46f5c19ae0.5bd835b0d6b1d4ada3b9f0db936e82c8","fullName":"ui/register.spec.ts › Register page (guest) › mismatched passwords are rejected before reaching the API","name":"mismatched passwords are rejected before reaching the API","status":"passed","testResultsByEnv":{"default":"93e852c157ac75de7628573a32a8ae8c"}}

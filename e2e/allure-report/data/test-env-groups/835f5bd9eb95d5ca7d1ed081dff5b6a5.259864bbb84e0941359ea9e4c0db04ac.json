@@ -1,0 +1,1 @@
+{"id":"835f5bd9eb95d5ca7d1ed081dff5b6a5.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/auth.api.spec.ts › Auth API: login › wrong credentials return 401 @smoke","name":"wrong credentials return 401 @smoke","status":"passed","testResultsByEnv":{"default":"a54bb0de961d048903efc0edc4cd45b9"}}

@@ -1,0 +1,1 @@
+{"id":"1c0bc81a4de63e909bcd28d8f084e6f9.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/auth.api.spec.ts › Auth API: session › GET /auth/check as a guest returns user null","name":"GET /auth/check as a guest returns user null","status":"passed","testResultsByEnv":{"default":"8ec63198560d42aba8562deaaff22dba"}}

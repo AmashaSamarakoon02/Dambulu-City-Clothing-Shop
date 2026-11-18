@@ -1,0 +1,1 @@
+{"id":"dc6d32e77cabade9cf04488e2f71e185.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/auth-flows.api.spec.ts › Auth API: password reset and verification › forgot-password with a malformed email returns 400","name":"forgot-password with a malformed email returns 400","status":"passed","testResultsByEnv":{"default":"020790d0fe0d01086a31260d964555c6"}}

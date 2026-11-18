@@ -1,0 +1,1 @@
+{"id":"5d03c276787f0ca84733293131b9c0e0.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/products.api.spec.ts › Products API: details › a malformed id returns 400 with a field error","name":"a malformed id returns 400 with a field error","status":"passed","testResultsByEnv":{"default":"03d36189b3e940d7a2909787f59c8d8c"}}

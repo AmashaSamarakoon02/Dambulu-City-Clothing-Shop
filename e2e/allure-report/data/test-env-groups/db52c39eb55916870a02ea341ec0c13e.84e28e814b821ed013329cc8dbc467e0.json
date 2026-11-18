@@ -1,0 +1,1 @@
+{"id":"db52c39eb55916870a02ea341ec0c13e.84e28e814b821ed013329cc8dbc467e0","fullName":"ui/register.spec.ts › Register page (guest) › an already-registered email shows the API error and no inbox screen","name":"an already-registered email shows the API error and no inbox screen","status":"passed","testResultsByEnv":{"default":"b58887f5e44e41a4d5dc0e732fb6dc78"}}

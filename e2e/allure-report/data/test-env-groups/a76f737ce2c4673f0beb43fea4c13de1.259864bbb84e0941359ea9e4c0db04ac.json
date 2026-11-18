@@ -1,0 +1,1 @@
+{"id":"a76f737ce2c4673f0beb43fea4c13de1.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/auth.api.spec.ts › Auth API: register validation › a password without a number is rejected","name":"a password without a number is rejected","status":"passed","testResultsByEnv":{"default":"0bceb3466c1032b07c1d26298eaabc99"}}

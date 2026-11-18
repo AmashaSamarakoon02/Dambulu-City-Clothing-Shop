@@ -1,0 +1,1 @@
+{"id":"8454a49cedd7b4abbf1fbad23b8f595b.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/auth-flows.api.spec.ts › Auth API: portals and logout › GET /admin/auth/check as a guest returns user null","name":"GET /admin/auth/check as a guest returns user null","status":"passed","testResultsByEnv":{"default":"1dc86fc2c55e1b28268c7fdf307c9c90"}}

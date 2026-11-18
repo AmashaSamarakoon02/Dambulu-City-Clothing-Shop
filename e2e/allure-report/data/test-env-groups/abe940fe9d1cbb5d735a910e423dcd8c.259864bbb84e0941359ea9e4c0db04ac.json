@@ -1,0 +1,1 @@
+{"id":"abe940fe9d1cbb5d735a910e423dcd8c.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/auth.api.spec.ts › Auth API: session › GET /auth/profile without a cookie returns 401","name":"GET /auth/profile without a cookie returns 401","status":"passed","testResultsByEnv":{"default":"affb6982cf6de5b2ba168322055e9670"}}

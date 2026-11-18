@@ -1,0 +1,1 @@
+{"id":"06686a0faaf8fe2077adcb870ac859c2.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/auth.api.spec.ts › Auth API: register validation › an empty body returns 400 listing every required field","name":"an empty body returns 400 listing every required field","status":"passed","testResultsByEnv":{"default":"6966249108db8720318e37b0ed83ca5d"}}

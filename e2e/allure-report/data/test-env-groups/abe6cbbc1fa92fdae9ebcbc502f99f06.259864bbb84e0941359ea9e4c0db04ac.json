@@ -1,0 +1,1 @@
+{"id":"abe6cbbc1fa92fdae9ebcbc502f99f06.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/products.api.spec.ts › Products API: list › GET /products returns a paginated envelope @smoke","name":"GET /products returns a paginated envelope @smoke","status":"passed","testResultsByEnv":{"default":"a511509abf62865fa0cb58ea8aa99936"}}

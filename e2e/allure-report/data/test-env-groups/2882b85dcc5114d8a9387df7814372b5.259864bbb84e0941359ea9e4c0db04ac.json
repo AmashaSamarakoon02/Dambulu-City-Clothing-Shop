@@ -1,0 +1,1 @@
+{"id":"2882b85dcc5114d8a9387df7814372b5.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/catalog.api.spec.ts › Reviews API › GET /reviews/product/:id with a malformed id returns 400","name":"GET /reviews/product/:id with a malformed id returns 400","status":"passed","testResultsByEnv":{"default":"4883deff3584179c21e2cf42c6eafc47"}}

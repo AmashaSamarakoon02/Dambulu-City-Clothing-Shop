@@ -1,0 +1,1 @@
+{"id":"72f18ba5a9e7015c146bfea7e528c6a7.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/customer.api.spec.ts › Orders API (customer) › GET /orders/my/:id returns one of the customer's orders","name":"GET /orders/my/:id returns one of the customer's orders","status":"passed","testResultsByEnv":{"default":"fcd4f0aabb737cd87a47f7d8d54509f2"}}

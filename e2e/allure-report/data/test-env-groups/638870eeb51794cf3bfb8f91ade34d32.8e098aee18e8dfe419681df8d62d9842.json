@@ -1,0 +1,1 @@
+{"id":"638870eeb51794cf3bfb8f91ade34d32.8e098aee18e8dfe419681df8d62d9842","fullName":"ui/checkout.spec.ts › Checkout (logged in) › with items in the cart › contact details are pre-filled from GET /auth/profile","name":"contact details are pre-filled from GET /auth/profile","status":"passed","testResultsByEnv":{"default":"4810fecab9e9b52e074a155f531f9726"}}

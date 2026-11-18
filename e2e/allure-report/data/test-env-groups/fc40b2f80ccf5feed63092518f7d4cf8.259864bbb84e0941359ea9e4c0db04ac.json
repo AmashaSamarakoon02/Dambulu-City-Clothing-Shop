@@ -1,0 +1,1 @@
+{"id":"fc40b2f80ccf5feed63092518f7d4cf8.259864bbb84e0941359ea9e4c0db04ac","fullName":"api/products.api.spec.ts › Products API: details › GET /products/:id returns the product @smoke","name":"GET /products/:id returns the product @smoke","status":"passed","testResultsByEnv":{"default":"0d4444dbfe69d7eb8e909daf28dfc7fe"}}
